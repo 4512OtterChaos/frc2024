@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Drivetrain;
+package frc.robot.subsystems.drivetrain;
 
 public class Drivetrain {
     
