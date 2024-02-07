@@ -41,9 +41,15 @@ public class Arm extends SubsystemBase {
     }
 
     public void setAngle(double targetAngle){
-        this.targetAngle = targetAngle;
+        this.targetAngle = Math.toRadians(MathUtil.clamp(targetAngle,0,kMaxRotationDegrees));
     }
 
-    
+    public double getEncoderDistance(){
+        return (lefStatusSignal.getValueAsDouble()+righStatusSignal.getValueAsDouble())/2;
+    }
+
+    public Command CSetAngle(double targetAngle){
+        return run(()->setAngle(targetAngle)).until();
+    }
 
 }
