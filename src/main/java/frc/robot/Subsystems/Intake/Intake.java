@@ -1,4 +1,4 @@
-package frc.robot.subsystems.intake;
+package frc.robot.subsystems.Intake;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -9,5 +9,9 @@ public class Intake {
     
     public Intake(){
 
+    }
+
+    public void setVoltage{
+        
     }
 }

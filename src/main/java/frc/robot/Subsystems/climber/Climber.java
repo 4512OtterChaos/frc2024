@@ -95,8 +95,8 @@ public class Climber extends SubsystemBase {
         isManual = false;
         rightTargetRotations = rotations;
     }
-    public void setTopHeightRotations(){setRotations(kTopHeightRotations);}
-    public void setBottomHeighRotations(){setRotations(kBottomHeightRotations);}
+    public void setTopHeightRotations(){setLeftRotations(kTopHeightRotations);setRightRotations(kTopHeightRotations);}
+    public void setBottomHeighRotations(){setLeftRotations(kBottomHeightRotations);setRightRotations(kBottomHeightRotations);}
 
     public void log(){
         SmartDashboard.putNumber("Climber/Left Pos", leftEncoder.getPosition());

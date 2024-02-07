@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drivetrain;
+package frc.robot.subsystems.Drivetrain;
 
 public class DrivetrainConstants {
     
