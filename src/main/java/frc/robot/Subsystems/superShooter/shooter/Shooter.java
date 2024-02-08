@@ -1,11 +1,15 @@
 package frc.robot.subsystems.superShooter.shooter;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import static frc.robot.subsystems.superShooter.shooter.ShooterConstants.*;
 
 import frc.robot.util.OCSparkMax;
 
-public class Shooter {
+public class Shooter extends SubsystemBase {
     private OCSparkMax leftMotor = new OCSparkMax(1, MotorType.kBrushless);
     private OCSparkMax rightMotor = new OCSparkMax(1, MotorType.kBrushless);
 
@@ -28,6 +32,10 @@ public class Shooter {
 
     public void shootTable(double distance){
     // to be completed once we have the table
+    }
+
+    public Command CShootSubwoof(){
+        return run(()->shootSubwoof());
     }
 
 }
