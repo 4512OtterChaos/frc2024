@@ -25,7 +25,7 @@ public class RobotContainer {
 
 
     private void configureDriverBinds(){
-        intake.setDefaultCommand(intake.setVelocityC(0));
+        intake.setDefaultCommand(intake.setVoltageC(0));
 
 
 
