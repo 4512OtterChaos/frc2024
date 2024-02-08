@@ -5,6 +5,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.subsystems.superShooter.arm.ArmConstants.*;
@@ -48,8 +49,12 @@ public class Arm extends SubsystemBase {
         return (lefStatusSignal.getValueAsDouble()+righStatusSignal.getValueAsDouble())/2;
     }
 
+    public double getEncoderAngle(){
+        return (getEncoderDistance()/kCountsPerRevolution)*360;
+    }
+
     public Command CSetAngle(double targetAngle){
-        return run(()->setAngle(targetAngle)).until();
+        return runOnce(()->setAngle(targetAngle));
     }
 
 }
