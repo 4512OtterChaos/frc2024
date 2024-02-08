@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.wpilibj.TimedRobot;
 
 /**
@@ -13,13 +14,15 @@ import edu.wpi.first.wpilibj.TimedRobot;
  * project.
  */
 public class Robot extends TimedRobot {
-
+  public RobotContainer robot = new RobotContainer();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
-  public void robotInit() {}
+  public void robotInit() {
+
+  }
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
