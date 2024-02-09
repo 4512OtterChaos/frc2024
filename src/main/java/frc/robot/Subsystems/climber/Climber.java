@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.OCSparkMax;
 
@@ -96,7 +97,7 @@ public class Climber extends SubsystemBase {
         rightTargetRotations = rotations;
     }
     public void setTopHeightRotations(){setLeftRotations(kTopHeightRotations);setRightRotations(kTopHeightRotations);}
-    public void setBottomHeighRotations(){setLeftRotations(kBottomHeightRotations);setRightRotations(kBottomHeightRotations);}
+    public void setBottomHeightRotations(){setLeftRotations(kBottomHeightRotations);setRightRotations(kBottomHeightRotations);}
 
     public void log(){
         SmartDashboard.putNumber("Climber/Left Pos", leftEncoder.getPosition());
@@ -121,5 +122,17 @@ public class Climber extends SubsystemBase {
 
     public double getCurrentDraw(){
         return leftMotor.getOutputCurrent() + rightMotor.getOutputCurrent();
+    }
+
+    public Command CSetMinHeight(){
+        return runOnce(()->setBottomHeightRotations());
+    }
+    
+    public Command CSetMaxHeight(){
+        return runOnce(()->setTopHeightRotations());
+    }
+
+    public Command CStop(){
+        return runOnce(()->stop());
     }
 }

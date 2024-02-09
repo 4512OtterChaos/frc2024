@@ -33,8 +33,8 @@ public class RobotContainer {
 
     private void configureDriverBinds(){
         intake.setDefaultCommand(intake.setVoltageC(0));
-        climber.setDefaultCommand(null);
-        //TODO: set this ^ to the stop command once there's a command for it
+        climber.setDefaultCommand(climber.CStop());
+    
 
 
 
@@ -48,8 +48,10 @@ public class RobotContainer {
 
         driver.x().onTrue(arm.CSetAngle(0));
         driver.a().whileTrue(shooter.CShootSubwoof());
+        driver.b().whileTrue(shooter.CShootAmp());
 
-        
+        driver.povUp().onTrue(climber.CSetMaxHeight());
+        driver.povDown().onTrue(climber.CSetMaxHeight());
     }   
 
 
