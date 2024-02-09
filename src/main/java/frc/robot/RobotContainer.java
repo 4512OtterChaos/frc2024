@@ -1,5 +1,8 @@
 package frc.robot;
 
+import javax.swing.text.html.HTMLDocument.RunElement;
+
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.auto.AutoOptions;
 import frc.robot.subsystems.climber.Climber;
@@ -23,10 +26,15 @@ public class RobotContainer {
         configureDriverBinds();
     }
 
+    public Command getAuto(){
+        return autos.getAuto();
+    }
+
 
     private void configureDriverBinds(){
         intake.setDefaultCommand(intake.setVoltageC(0));
-
+        climber.setDefaultCommand(null);
+        //TODO: set this ^ to the stop command once there's a command for it
 
 
 
@@ -40,6 +48,8 @@ public class RobotContainer {
 
         driver.x().onTrue(arm.CSetAngle(0));
         driver.a().whileTrue(shooter.CShootSubwoof());
+
+        
     }   
 
 

@@ -107,7 +107,7 @@ public class Climber extends SubsystemBase {
         SmartDashboard.putNumber("Climber/Left point", leftController.getSetpoint().position);
 
     }
-
+//No Monologue ;-;
 
 
     // simulation init

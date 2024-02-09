@@ -1,6 +1,5 @@
 package frc.robot.subsystems.superShooter.arm;
 
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.MathUtil;
@@ -14,8 +13,6 @@ public class Arm extends SubsystemBase {
     private TalonFX leftMotor = new TalonFX(1);
     private TalonFX rightMotor = new TalonFX(2);
     private ProfiledPIDController pid = new ProfiledPIDController(kP, kI, kI, null);
-    private StatusSignal<Double> lefStatusSignal = leftMotor.getPosition();
-    private StatusSignal<Double> righStatusSignal = rightMotor.getPosition();
     
 
     private double targetAngle = 0;
@@ -29,7 +26,7 @@ public class Arm extends SubsystemBase {
 
     @Override
     public void periodic() {
-        double currentAngle = (lefStatusSignal.getValueAsDouble()+righStatusSignal.getValueAsDouble())/2;
+        double currentAngle = getEncoderAngle();
         setSpeed(pid.calculate(currentAngle,targetAngle));
 
 
@@ -46,11 +43,11 @@ public class Arm extends SubsystemBase {
     }
 
     public double getEncoderDistance(){
-        return (lefStatusSignal.getValueAsDouble()+righStatusSignal.getValueAsDouble())/2;
+        return (rightMotor.getPosition().getValueAsDouble()+leftMotor.getPosition().getValueAsDouble())/2;
     }
 
     public double getEncoderAngle(){
-        return (getEncoderDistance()/kCountsPerRevolution)*360;
+        return Math.toRadians((getEncoderDistance()/kCountsPerRevolution)*360);
     }
 
     public Command CSetAngle(double targetAngle){
