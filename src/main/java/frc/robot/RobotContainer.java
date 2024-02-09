@@ -33,7 +33,7 @@ public class RobotContainer {
 
     private void configureDriverBinds(){
         intake.setDefaultCommand(intake.setVoltageC(0));
-        climber.setDefaultCommand(climber.CStop());
+        climber.setDefaultCommand(null);
     
 
 
@@ -43,15 +43,17 @@ public class RobotContainer {
 
 
 
-        driver.rightTrigger().whileTrue(intake.setVoltageInC());
-        driver.leftTrigger().whileTrue(intake.setVoltageOutC());
+        driver.rightTrigger().whileTrue(shooter.CShootTable(2));
+        driver.leftTrigger().whileTrue(intake.setVoltageInC());
+
+        driver.leftStick().whileTrue(intake.setVoltageOutC());
 
         driver.x().onTrue(arm.CSetAngle(0));
         driver.a().whileTrue(shooter.CShootSubwoof());
         driver.b().whileTrue(shooter.CShootAmp());
 
         driver.povUp().onTrue(climber.CSetMaxHeight());
-        driver.povDown().onTrue(climber.CSetMaxHeight());
+        driver.povDown().onTrue(climber.CSetMinHeight());
     }   
 
 
