@@ -4,6 +4,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -13,6 +14,7 @@ public class Arm extends SubsystemBase {
     private TalonFX leftMotor = new TalonFX(1);
     private TalonFX rightMotor = new TalonFX(2);
     private ProfiledPIDController pid = new ProfiledPIDController(kP, kI, kI, null);
+    private SimpleMotorFeedforward mff = new SimpleMotorFeedforward(1, 0.5);
     
 
     private double targetAngle = 0;
@@ -27,15 +29,19 @@ public class Arm extends SubsystemBase {
     @Override
     public void periodic() {
         double currentAngle = getEncoderAngle();
-        setSpeed(pid.calculate(currentAngle,targetAngle));
+        setVoltage(pid.calculate(currentAngle,targetAngle)+mff.calculate(getVelocity()));
 
 
     }
 
+    public void setVoltage(double volts){
+        leftMotor.setVoltage(volts);
+        rightMotor.setVoltage(volts);
+    }
+
     public void setSpeed(double desiredSpeed){
         MathUtil.clamp(desiredSpeed, -1, 1);
-        leftMotor.setVoltage(kShoulderVoltage*desiredSpeed);
-        rightMotor.setVoltage(kShoulderVoltage*desiredSpeed);
+        setVoltage(kShoulderVoltage*desiredSpeed);
     }
 
     public void setAngle(double targetAngle){
@@ -44,6 +50,10 @@ public class Arm extends SubsystemBase {
 
     public double getEncoderDistance(){
         return (rightMotor.getPosition().getValueAsDouble()+leftMotor.getPosition().getValueAsDouble())/2;
+    }
+
+    public double getVelocity(){
+        return (leftMotor.getVelocity().getValueAsDouble()+rightMotor.getVelocity().getValueAsDouble())/2;
     }
 
     public double getEncoderAngle(){
