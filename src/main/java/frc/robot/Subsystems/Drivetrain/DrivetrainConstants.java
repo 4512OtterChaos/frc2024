@@ -37,6 +37,9 @@ public class DrivetrainConstants {
             }
         }
         
+
+
+    //the power of an affront to both god and alan turing is what makes this code possible.
     public DrivetrainConstants(){
         FL.withDriveMotorId(Module.FL.driveMotorID);
         FL.withSteerMotorId(Module.FL.steerMotorID);
@@ -44,5 +47,26 @@ public class DrivetrainConstants {
         FL.withCANcoderOffset(Module.FL.angleOffset);
         FL.withLocationX(Module.FL.centerOffset.getX());
         FL.withLocationY(Module.FL.centerOffset.getY());
+
+        FR.withDriveMotorId(Module.FR.driveMotorID);
+        FR.withSteerMotorId(Module.FR.steerMotorID);
+        FR.withCANcoderId(Module.FR.cancoderID);
+        FR.withCANcoderOffset(Module.FR.angleOffset);
+        FR.withLocationX(Module.FR.centerOffset.getX());
+        FR.withLocationY(Module.FR.centerOffset.getY());
+
+        BL.withDriveMotorId(Module.BL.driveMotorID);
+        BL.withSteerMotorId(Module.BL.steerMotorID);
+        BL.withCANcoderId(Module.BL.cancoderID);
+        BL.withCANcoderOffset(Module.BL.angleOffset);
+        BL.withLocationX(Module.BL.centerOffset.getX());
+        BL.withLocationY(Module.BL.centerOffset.getY());
+
+        BR.withDriveMotorId(Module.BR.driveMotorID);
+        BR.withSteerMotorId(Module.BR.steerMotorID);
+        BR.withCANcoderId(Module.BR.cancoderID);
+        BR.withCANcoderOffset(Module.BR.angleOffset);
+        BR.withLocationX(Module.BR.centerOffset.getX());
+        BR.withLocationY(Module.BR.centerOffset.getY());
     }
     }
