@@ -3,11 +3,17 @@ package frc.robot.subsystems.drivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 
 public class DrivetrainConstants {
     
     public static final double kTrackWidth = 0;
     public static final double kTrackLength = 0;
+
+    public static final double kLinearAcceleration = Units.feetToMeters(20); //TODO: tune these to this year's robot (currently just last year's robot)
+    public static final double kLinearDeceleration = Units.feetToMeters(30);
+    public static final double kRotationalAcceleration = Units.rotationsToRadians(6);
+    public static final double kRotationalDeceleration = Units.rotationsToRadians(10);
 
     public static SwerveModuleConstants FL = new SwerveModuleConstants();
     public static SwerveModuleConstants FR = new SwerveModuleConstants();
