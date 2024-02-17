@@ -7,8 +7,8 @@ import edu.wpi.first.math.util.Units;
 
 public class DrivetrainConstants {
     
-    public static final double kTrackWidth = 0;
-    public static final double kTrackLength = 0;
+    public static final double kTrackWidth = Units.inchesToMeters(20.5);
+    public static final double kTrackLength = Units.inchesToMeters(18.5);
 
     public static final double kLinearAcceleration = Units.feetToMeters(20); //TODO: tune these to this year's robot (currently just last year's robot)
     public static final double kLinearDeceleration = Units.feetToMeters(30);

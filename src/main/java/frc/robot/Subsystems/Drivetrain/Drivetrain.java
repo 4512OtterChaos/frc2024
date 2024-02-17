@@ -1,5 +1,6 @@
 package frc.robot.subsystems.drivetrain;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -7,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.subsystems.drivetrain.DrivetrainConstants.*;
 
-
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 
 
@@ -18,6 +19,7 @@ public class Drivetrain extends SubsystemBase {
         new SwerveModule(BL, getName()),
         new SwerveModule(BR, getName())
     };
+    private Pigeon2 gyro = new Pigeon2(0);
     private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
     DrivetrainConstants.Module.FL.centerOffset,
     DrivetrainConstants.Module.FR.centerOffset,
@@ -36,6 +38,7 @@ public class Drivetrain extends SubsystemBase {
         ChassisSpeeds targetSpeeds = new ChassisSpeeds(vX, vY, omegaDegrees);
         targetSpeeds = limiter.calculate(targetSpeeds, lastTargetSpeeds, 0.02);
         lastTargetSpeeds = targetSpeeds;
+        targetSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(targetSpeeds, getHeading());
         setChassisSpeeds(targetSpeeds);
     }
     
@@ -54,6 +57,14 @@ public class Drivetrain extends SubsystemBase {
     public void setChassisSpeeds(ChassisSpeeds targetSpeeds){
         setSwerveStates(kinematics.toSwerveModuleStates(targetSpeeds));
         
+    }
+
+    public Rotation2d getHeading(){
+        return gyro.getRotation2d();
+    }
+
+    public void resetGyro(){
+        gyro.reset();
     }
 
     public Command CDrive(double vX,double vY,double omegaDegrees){
