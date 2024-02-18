@@ -70,5 +70,9 @@ public class Drivetrain extends SubsystemBase {
     public Command CDrive(double vX,double vY,double omegaDegrees){
         return run(()->drive(vX, vY, omegaDegrees));
     }
+
+    public Command CResetGyro(){
+        return runOnce(()->resetGyro());
+    }
     
 }

@@ -55,6 +55,8 @@ public class RobotContainer {
 
         driver.povUp().onTrue(climber.CSetMaxHeight());
         driver.povDown().onTrue(climber.CSetMinHeight());
+
+        driver.start().onTrue(drivetrain.CResetGyro());
     }   
 
 
