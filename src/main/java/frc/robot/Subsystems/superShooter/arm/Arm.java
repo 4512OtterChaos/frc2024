@@ -6,6 +6,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.subsystems.superShooter.arm.ArmConstants.*;
@@ -18,6 +19,7 @@ public class Arm extends SubsystemBase {
     
 
     private double targetAngle = 0;
+    private boolean isManual = false;
 
     public Arm() {
         rightMotor.setInverted(true);
@@ -29,7 +31,8 @@ public class Arm extends SubsystemBase {
     @Override
     public void periodic() {
         double currentAngle = getEncoderAngle();
-        setVoltage(pid.calculate(currentAngle,targetAngle)+mff.calculate(getVelocity()));
+        if (!isManual){setVoltage(pid.calculate(currentAngle,targetAngle)+mff.calculate(getVelocity()));}
+        
 
 
     }
@@ -40,11 +43,13 @@ public class Arm extends SubsystemBase {
     }
 
     public void setSpeed(double desiredSpeed){
+        isManual = true;
         MathUtil.clamp(desiredSpeed, -1, 1);
         setVoltage(kShoulderVoltage*desiredSpeed);
     }
 
     public void setAngle(double targetAngle){
+        isManual = false;
         this.targetAngle = Math.toRadians(MathUtil.clamp(targetAngle,0,kMaxRotationDegrees));
     }
 
@@ -59,6 +64,36 @@ public class Arm extends SubsystemBase {
     public double getEncoderAngle(){
         return Math.toRadians((getEncoderDistance()/kCountsPerRevolution)*360);
     }
+
+    public void resetEncoders(){
+        leftMotor.setPosition(0);
+        rightMotor.setPosition(0);
+    }
+
+    public double getCurrentFlow(){
+        double rightCurrent = rightMotor.getTorqueCurrent().getValueAsDouble();
+        double leftCurrent = leftMotor.getTorqueCurrent().getValueAsDouble();
+        return (leftCurrent+rightCurrent)/2;
+    }
+
+    public boolean getStalled(){
+
+
+
+        if(){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Command sendArmHome(){
+        
+        return (
+            run(()->setSpeed(-0.1)).until(()->getStalled()).finallyDo(()->resetEncoders())
+        );
+    }
+
 
     public Command CSetAngle(double targetAngle){
         return runOnce(()->setAngle(targetAngle));
