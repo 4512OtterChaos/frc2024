@@ -1,4 +1,4 @@
-package frc.robot.subsystems.superShooter.feeder;
+package frc.robot.subsystems.feeder;
 
 public class FeederConstants {
     public static double kFeederVoltage = 3;

@@ -1,4 +1,6 @@
-package frc.robot.subsystems.superShooter.feeder;
+package frc.robot.subsystems.feeder;
+
+import static frc.robot.subsystems.feeder.FeederConstants.*;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -6,7 +8,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.OCSparkMax;
-import static frc.robot.subsystems.superShooter.feeder.FeederConstants.*;
 
 public class Feeder extends SubsystemBase {
     private OCSparkMax feederMotor = new OCSparkMax(1, MotorType.kBrushless);
