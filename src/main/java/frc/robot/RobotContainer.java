@@ -30,20 +30,11 @@ public class RobotContainer {
         return autos.getAuto();
     }
 
-
     private void configureDriverBinds(){
         drivetrain.setDefaultCommand(drivetrain.CDrive(driver.getLeftX(), driver.getLeftY(), driver.getRightX()));
         intake.setDefaultCommand(intake.setVoltageC(0));
         climber.setDefaultCommand(null);
     
-
-
-
-
-
-
-
-
         driver.rightTrigger().whileTrue(shooter.CShootTable(2));
         driver.leftTrigger().whileTrue(intake.setVoltageInC());
 
@@ -58,6 +49,4 @@ public class RobotContainer {
 
         driver.start().onTrue(drivetrain.CResetGyro());
     }   
-
-
 }

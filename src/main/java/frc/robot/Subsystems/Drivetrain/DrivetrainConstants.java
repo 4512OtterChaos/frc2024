@@ -20,7 +20,6 @@ public class DrivetrainConstants {
     public static SwerveModuleConstants BL = new SwerveModuleConstants();
     public static SwerveModuleConstants BR = new SwerveModuleConstants();
     
-
     public enum Module {
         FL(1,1,2,1,0,kTrackWidth/2,kTrackLength/2),
         FR(2,3,4,0,0,-kTrackWidth/2,kTrackLength/2),
@@ -42,8 +41,6 @@ public class DrivetrainConstants {
                 centerOffset = new Translation2d(xOffset, yOffset);
             }
         }
-        
-
 
     //the power of an affront to both god and alan turing is what makes this code possible.
     public DrivetrainConstants(){

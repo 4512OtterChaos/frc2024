@@ -44,5 +44,4 @@ public class Shooter extends SubsystemBase {
     public Command CShootTable(double distance){
         return run(()->shootTable(distance));
     }
-
 }

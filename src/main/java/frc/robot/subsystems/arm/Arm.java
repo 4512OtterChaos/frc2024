@@ -30,10 +30,9 @@ public class Arm extends SubsystemBase {
     @Override
     public void periodic() {
         double currentAngle = getEncoderAngle();
-        if (!isManual){setVoltage(pid.calculate(currentAngle,targetAngle)+mff.calculate(getVelocity()));}
-        
-
-
+        if (!isManual) {
+            setVoltage(pid.calculate(currentAngle,targetAngle) + mff.calculate(getVelocity()));
+        }
     }
 
     public void setVoltage(double volts){

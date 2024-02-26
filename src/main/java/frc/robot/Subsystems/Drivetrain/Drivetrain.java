@@ -21,27 +21,24 @@ public class Drivetrain extends SubsystemBase {
     };
     private Pigeon2 gyro = new Pigeon2(0);
     private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
-    DrivetrainConstants.Module.FL.centerOffset,
-    DrivetrainConstants.Module.FR.centerOffset,
-    DrivetrainConstants.Module.BL.centerOffset,
-    DrivetrainConstants.Module.BR.centerOffset
-    
+        DrivetrainConstants.Module.FL.centerOffset,
+        DrivetrainConstants.Module.FR.centerOffset,
+        DrivetrainConstants.Module.BL.centerOffset,
+        DrivetrainConstants.Module.BR.centerOffset
     );
 
-    SwerveDriveAccelLimiter limiter = new SwerveDriveAccelLimiter(kLinearAcceleration, kLinearDeceleration, kRotationalAcceleration, kRotationalDeceleration);
+    SwerveDriveAccelLimiter limiter = new SwerveDriveAccelLimiter(
+            kLinearAcceleration, kLinearDeceleration, kRotationalAcceleration, kRotationalDeceleration);
 
     private ChassisSpeeds lastTargetSpeeds = new ChassisSpeeds();
 
-
     public void drive(double vX,double vY,double omegaDegrees){
-
         ChassisSpeeds targetSpeeds = new ChassisSpeeds(vX, vY, omegaDegrees);
         targetSpeeds = limiter.calculate(targetSpeeds, lastTargetSpeeds, 0.02);
         lastTargetSpeeds = targetSpeeds;
         targetSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(targetSpeeds, getHeading());
         setChassisSpeeds(targetSpeeds);
     }
-    
 
     public void setSwerveStates(SwerveModuleState[] states){
         for (int i = 0; i < swerveMods.length; i++) {
@@ -74,5 +71,4 @@ public class Drivetrain extends SubsystemBase {
     public Command CResetGyro(){
         return runOnce(()->resetGyro());
     }
-    
 }
