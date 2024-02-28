@@ -1,5 +1,7 @@
 package frc.robot.subsystems.intake;
 
+import static frc.robot.subsystems.intake.IntakeConstants.*;
+
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -11,9 +13,9 @@ import frc.robot.util.OCSparkMax;
 import frc.robot.util.OCSparkMax.OCRelativeEncoder;
 
 public class Intake extends SubsystemBase{
-    private OCSparkMax motor = new OCSparkMax(1, MotorType.kBrushless);
+    private OCSparkMax floorMotor = new OCSparkMax(kFloorMotorID, MotorType.kBrushless);
 
-    OCRelativeEncoder encoder = motor.getEncoder();
+    OCRelativeEncoder encoder = floorMotor.getEncoder();
     
     private SimpleMotorFeedforward ff = new SimpleMotorFeedforward(0.25, 0.005);
     private PIDController pid = new PIDController(0.005, 0, 0);
@@ -31,13 +33,13 @@ public class Intake extends SubsystemBase{
     // @Override
     public void periodic() {
         if(!isManual) {
-            motor.setVoltage(ff.calculate(pid.getSetpoint())+pid.calculate(encoder.getVelocity()));
+            floorMotor.setVoltage(ff.calculate(pid.getSetpoint())+pid.calculate(encoder.getVelocity()));
         }
     }
 
     public void setVoltage(double voltage){
         isManual=true;
-        motor.setVoltage(voltage);
+        floorMotor.setVoltage(voltage);
     }
 
     public void setVelocity(double rpm) {

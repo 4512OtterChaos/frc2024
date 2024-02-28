@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.OCSparkMax;
 
 public class Feeder extends SubsystemBase {
-    private OCSparkMax feederMotor = new OCSparkMax(1, MotorType.kBrushless);
+    private OCSparkMax feederMotor = new OCSparkMax(kMotorID, MotorType.kBrushless);
 
     public Feeder(){
 

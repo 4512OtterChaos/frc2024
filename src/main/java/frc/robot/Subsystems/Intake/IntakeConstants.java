@@ -1,6 +1,8 @@
 package frc.robot.subsystems.intake;
 
 public class IntakeConstants {
+    public static int kFloorMotorID = 1;
+    public static int kCenteringMotorID = 2;
 
     public static final int kMotorStallLimit = 40;
 

@@ -7,13 +7,14 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
     private TalonFX leftMotor = new TalonFX(1);
     private TalonFX rightMotor = new TalonFX(2);
-    private ProfiledPIDController pid = new ProfiledPIDController(kP, kI, kI, null);
+    private ProfiledPIDController pid = new ProfiledPIDController(kP, kI, kI, new Constraints(1, 1));
     private SimpleMotorFeedforward mff = new SimpleMotorFeedforward(1, 0.5);
     
 
@@ -36,12 +37,12 @@ public class Arm extends SubsystemBase {
     }
 
     public void setVoltage(double volts){
+        isManual = true;
         leftMotor.setVoltage(volts);
         rightMotor.setVoltage(volts);
     }
 
     public void setSpeed(double desiredSpeed){
-        isManual = true;
         MathUtil.clamp(desiredSpeed, -1, 1);
         setVoltage(kShoulderVoltage*desiredSpeed);
     }

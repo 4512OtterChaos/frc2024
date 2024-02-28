@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.OCSparkMax;
 
 public class Shooter extends SubsystemBase {
-    private OCSparkMax leftMotor = new OCSparkMax(1, MotorType.kBrushless);
-    private OCSparkMax rightMotor = new OCSparkMax(1, MotorType.kBrushless);
+    private OCSparkMax leftMotor = new OCSparkMax(kLeftMotorID, MotorType.kBrushless);
+    private OCSparkMax rightMotor = new OCSparkMax(kRightMotorID, MotorType.kBrushless);
 
     public Shooter() {
         rightMotor.setInverted(true);
