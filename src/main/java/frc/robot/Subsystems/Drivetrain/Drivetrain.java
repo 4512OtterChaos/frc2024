@@ -4,7 +4,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.subsystems.drivetrain.DrivetrainConstants.*;
 
@@ -32,7 +31,7 @@ public class Drivetrain extends SubsystemBase {
 
     private ChassisSpeeds lastTargetSpeeds = new ChassisSpeeds();
 
-    public void drive(double vX,double vY,double omegaDegrees){
+    public void drive(double vX, double vY, double omegaDegrees){
         ChassisSpeeds targetSpeeds = new ChassisSpeeds(vX, vY, omegaDegrees);
         targetSpeeds = limiter.calculate(targetSpeeds, lastTargetSpeeds, 0.02);
         lastTargetSpeeds = targetSpeeds;
@@ -62,13 +61,5 @@ public class Drivetrain extends SubsystemBase {
 
     public void resetGyro(){
         gyro.reset();
-    }
-
-    public Command CDrive(double vX,double vY,double omegaDegrees){
-        return run(()->drive(vX, vY, omegaDegrees));
-    }
-
-    public Command CResetGyro(){
-        return runOnce(()->resetGyro());
     }
 }

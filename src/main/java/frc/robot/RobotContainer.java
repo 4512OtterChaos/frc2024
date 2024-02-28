@@ -1,9 +1,7 @@
 package frc.robot;
 
-
-
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import static edu.wpi.first.wpilibj2.command.Commands.*;
 import frc.robot.auto.AutoOptions;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.climber.Climber;
@@ -11,6 +9,7 @@ import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.robot.subsystems.feeder.Feeder;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.util.OCXboxController;
 
 public class RobotContainer {
     private Drivetrain drivetrain = new Drivetrain();
@@ -20,7 +19,7 @@ public class RobotContainer {
     private Shooter shooter = new Shooter();
     private Arm arm = new Arm();
     private AutoOptions autos = new AutoOptions(drivetrain,intake,arm,shooter,feeder);
-    private CommandXboxController driver = new CommandXboxController(0);
+    private OCXboxController driver = new OCXboxController(0);
     
     public RobotContainer(){
         configureDriverBinds();
@@ -31,7 +30,11 @@ public class RobotContainer {
     }
 
     private void configureDriverBinds(){
-        drivetrain.setDefaultCommand(drivetrain.CDrive(driver.getLeftX(), driver.getLeftY(), driver.getRightX()));
+        //TODO: use real max drivespeed meters/second
+        drivetrain.setDefaultCommand(run(
+            ()->drivetrain.drive(driver.getForward(), driver.getStrafe(), driver.getTurn()),
+            drivetrain
+        ));
         intake.setDefaultCommand(intake.setVoltageC(0));
         climber.setDefaultCommand(null);
     
@@ -47,6 +50,6 @@ public class RobotContainer {
         driver.povUp().onTrue(climber.CSetMaxHeight());
         driver.povDown().onTrue(climber.CSetMinHeight());
 
-        driver.start().onTrue(drivetrain.CResetGyro());
+        driver.start().onTrue(runOnce(()->drivetrain.resetGyro()));
     }   
 }
