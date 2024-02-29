@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
@@ -10,7 +12,7 @@ import com.ctre.phoenix6.SignalLogger;
 import frc.robot.auto.AutoOptions;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.climber.Climber;
-import frc.robot.subsystems.drivetrain.SwerveDrive;
+import frc.robot.subsystems.drive.SwerveDrive;
 import frc.robot.subsystems.feeder.Feeder;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.Shooter;
@@ -44,7 +46,15 @@ public class RobotContainer {
     private void configureDriverBinds(OCXboxController controller){
         //TODO: use real max drivespeed meters/second
         swerve.setDefaultCommand(
-            swerve.cDrivePercent(controller::getForward, controller::getStrafe, controller::getTurn).ignoringDisable(true)
+            run(()->
+                swerve.drive(
+                    controller.getForward()*swerve.getMaxLinearVelocityMeters(),
+                    controller.getStrafe()*swerve.getMaxLinearVelocityMeters(),
+                    controller.getTurn()*swerve.getMaxAngularVelocityRadians(),
+                    true
+                ),
+                swerve
+            )
         );
         intake.setDefaultCommand(intake.setVoltageC(0));
         climber.setDefaultCommand(null);
@@ -61,17 +71,19 @@ public class RobotContainer {
         controller.povUp().onTrue(climber.CSetMaxHeight());
         controller.povDown().onTrue(climber.CSetMinHeight());
 
-        // reset field-relative forward direction
-        controller.start().onTrue(runOnce(()->swerve.seedFieldRelative()));
+        // reset the robot heading to 0
+        controller.start()
+            .onTrue(runOnce(()->
+                swerve.resetOdometry(
+                    new Pose2d(
+                        swerve.getPose().getTranslation(),
+                        new Rotation2d()
+                    )
+                )
+            )
+        );
     }
 
     private void configureOperatorBinds(OCXboxController controller) {
-        /* Bindings for drivetrain characterization */
-        /* These bindings require multiple buttons pushed to swap between quastatic and dynamic */
-        /* Back/Start select dynamic/quasistatic, Y/X select forward/reverse direction */
-        controller.back().and(controller.y()).whileTrue(swerve.cSysIdDynamic(Direction.kForward));
-        controller.back().and(controller.a()).whileTrue(swerve.cSysIdDynamic(Direction.kReverse));
-        controller.start().and(controller.y()).whileTrue(swerve.cSysIdQuasistatic(Direction.kForward));
-        controller.start().and(controller.a()).whileTrue(swerve.cSysIdQuasistatic(Direction.kReverse));
     }
 }
