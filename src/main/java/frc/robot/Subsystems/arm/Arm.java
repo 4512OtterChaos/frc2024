@@ -1,4 +1,4 @@
-package frc.robot.subsystems.superShooter.arm;
+package frc.robot.subsystems.arm;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import static frc.robot.subsystems.superShooter.arm.ArmConstants.*;
+import static frc.robot.subsystems.arm.ArmConstants.*;
 
 public class Arm extends SubsystemBase {
     private TalonFX leftMotor = new TalonFX(1);

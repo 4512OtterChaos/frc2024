@@ -1,11 +1,11 @@
-package frc.robot.subsystems.superShooter.shooter;
+package frc.robot.subsystems.shooter;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import static frc.robot.subsystems.superShooter.shooter.ShooterConstants.*;
+import static frc.robot.subsystems.shooter.ShooterConstants.*;
 
 import frc.robot.util.OCSparkMax;
 

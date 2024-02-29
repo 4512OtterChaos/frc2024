@@ -1,4 +1,4 @@
-package frc.robot.subsystems.superShooter.arm;
+package frc.robot.subsystems.arm;
 
 public class ArmConstants {
     public static double kShoulderVoltage = 4;
