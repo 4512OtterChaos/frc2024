@@ -32,7 +32,7 @@ public class RobotContainer {
 
 
     private void configureDriverBinds(){
-        drivetrain.setDefaultCommand(drivetrain.CDrive(driver.getLeftX(), driver.getLeftY(), driver.getRightX()));
+        drivetrain.setDefaultCommand(drivetrain.CDrive((()->driver.getLeftX()), (()->driver.getLeftY()), (()->driver.getRightX())));
         intake.setDefaultCommand(intake.setVoltageC(0));
         climber.setDefaultCommand(null);
     

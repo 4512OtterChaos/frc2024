@@ -76,23 +76,14 @@ public class Arm extends SubsystemBase {
         return (leftCurrent+rightCurrent)/2;
     }
 
-    public boolean getStalled(){
+    
 
-
-
-        if(){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public Command sendArmHome(){
+    // public Command sendArmHome(){
         
-        return (
-            run(()->setSpeed(-0.1)).until(()->getStalled()).finallyDo(()->resetEncoders())
-        );
-    }
+    //     return (
+    //         run(()->setSpeed(-0.1)).until(()->getStalled()).finallyDo(()->resetEncoders())
+    //     );
+    // }
 
 
     public Command CSetAngle(double targetAngle){

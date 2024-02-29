@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.subsystems.drivetrain.DrivetrainConstants.*;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 
@@ -67,8 +69,8 @@ public class Drivetrain extends SubsystemBase {
         gyro.reset();
     }
 
-    public Command CDrive(double vX,double vY,double omegaDegrees){
-        return run(()->drive(vX, vY, omegaDegrees));
+    public Command CDrive(DoubleSupplier vX,DoubleSupplier vY,DoubleSupplier omegaDegrees){
+        return run(()->drive(vX.getAsDouble(), vY.getAsDouble(), omegaDegrees.getAsDouble()));
     }
 
     public Command CResetGyro(){
