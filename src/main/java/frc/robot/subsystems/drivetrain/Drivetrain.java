@@ -1,6 +1,7 @@
 package frc.robot.subsystems.drivetrain;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -11,7 +12,9 @@ import static frc.robot.subsystems.drivetrain.DrivetrainConstants.*;
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.mechanisms.swerve.SimSwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 
 
 public class Drivetrain extends SubsystemBase {
@@ -33,6 +36,27 @@ public class Drivetrain extends SubsystemBase {
     SwerveDriveAccelLimiter limiter = new SwerveDriveAccelLimiter(kLinearAcceleration, kLinearDeceleration, kRotationalAcceleration, kRotationalDeceleration);
 
     private ChassisSpeeds lastTargetSpeeds = new ChassisSpeeds();
+
+    public SimSwerveDrivetrain sim = new SimSwerveDrivetrain(new Translation2d[]{
+        DrivetrainConstants.Module.FL.centerOffset,
+        DrivetrainConstants.Module.FR.centerOffset,
+        DrivetrainConstants.Module.BL.centerOffset,
+        DrivetrainConstants.Module.BR.centerOffset
+    }, gyro, null, 
+    new SwerveModuleConstants[]{
+        FL,
+        FR,
+        BL,
+        BR
+    });
+
+
+
+
+    @Override
+    public void periodic() {
+        sim.update(0.02, 12, swerveMods);
+    }
 
 
     public void drive(double vX,double vY,double omegaDegrees){
@@ -77,4 +101,19 @@ public class Drivetrain extends SubsystemBase {
         return runOnce(()->resetGyro());
     }
     
+
+
+
+
+//sim
+
+public void sim(){
+    
+}
+
+
+
+
+
+
 }
