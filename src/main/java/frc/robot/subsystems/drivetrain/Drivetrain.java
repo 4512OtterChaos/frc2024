@@ -13,7 +13,6 @@ import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SimSwerveDrivetrain;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 
@@ -43,9 +42,7 @@ public class Drivetrain extends SubsystemBase {
         DrivetrainConstants.Module.FR.centerOffset,
         DrivetrainConstants.Module.BL.centerOffset,
         DrivetrainConstants.Module.BR.centerOffset
-    }, gyro, new SwerveDrivetrainConstants(
-        
-    ), 
+    }, gyro, null, 
     new SwerveModuleConstants[]{
         FL,
         FR,
