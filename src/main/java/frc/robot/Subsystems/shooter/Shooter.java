@@ -10,8 +10,8 @@ import static frc.robot.subsystems.shooter.ShooterConstants.*;
 import frc.robot.util.OCSparkMax;
 
 public class Shooter extends SubsystemBase {
-    private OCSparkMax leftMotor = new OCSparkMax(1, MotorType.kBrushless);
-    private OCSparkMax rightMotor = new OCSparkMax(1, MotorType.kBrushless);
+    private OCSparkMax leftMotor = new OCSparkMax(3, MotorType.kBrushless);
+    private OCSparkMax rightMotor = new OCSparkMax(2, MotorType.kBrushless);
 
     public Shooter() {
         rightMotor.setInverted(true);
