@@ -1,4 +1,4 @@
-package frc.robot.subsystems.superShooter.intake;
+package frc.robot.subsystems.intake;
 
 public class IntakeConstants {
 
