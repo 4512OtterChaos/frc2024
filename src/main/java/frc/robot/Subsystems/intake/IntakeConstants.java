@@ -1,4 +1,4 @@
-package frc.robot.ubsystems.intake;
+package frc.robot.subsystems.intake;
 
 public class IntakeConstants {
 
