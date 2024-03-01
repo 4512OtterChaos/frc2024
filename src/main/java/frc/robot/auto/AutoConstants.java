@@ -26,7 +26,7 @@ public class AutoConstants {
     public static final double kThetaPositionTolerance = Units.degreesToRadians(3.5);
     public static final double kThetaVelocityTolerance = Units.degreesToRadians(10);
 
-    // packaged configs for path following
+    // // packaged configs for path following
     // public static final PathConstraints kFastSpeedConfig = new PathConstraints(
     //     Units.feetToMeters(11), 
     //     Units.feetToMeters(14)

@@ -14,10 +14,41 @@ import frc.robot.subsystems.shooter.Shooter;
 public class AutoOptions {
     public SendableChooser<Command> autoOptions = new SendableChooser<Command>();
 
-    public AutoOptions(SwerveDrive swerve, Intake intake, Arm arm, Shooter shooter, Feeder feeder) {
-        autoOptions.setDefaultOption("Hold still", null);
+    public AutoOptions(SwerveDrive drive, Intake intake, Arm arm, Shooter shooter, Feeder feeder) {
+        autoOptions.setDefaultOption("none", null);
+        addDriveOnlyOptions();
+    }
+    public AutoOptions(SwerveDrive drive) {
+        autoOptions.setDefaultOption("none", null);
+        addDriveOnlyOptions();
     }
 
+    public void addDriveOnlyOptions(){
+        // autoOptions.addOption("AmpTaxi",
+        //     new OCSwerveFollower(
+        //         drive, 
+        //         "AmpTaxi", 
+        //         AutoConstants.kMediumSpeedConfig,
+        //         true
+        //     )
+        // );
+        // autoOptions.addOption("CenterTaxi",
+        //     new OCSwerveFollower(
+        //         drive, 
+        //         "CenterTaxi", 
+        //         AutoConstants.kMediumSpeedConfig,
+        //         true
+        //     )
+        // );
+        // autoOptions.addOption("SourceTaxi",
+        //     new OCSwerveFollower(
+        //         drive, 
+        //         "SourceTaxi", 
+        //         AutoConstants.kMediumSpeedConfig,
+        //         true
+        //     )
+        // );
+    }
     public Command getAuto(){
         return Optional.ofNullable(autoOptions.getSelected()).orElse(Commands.none());
     }

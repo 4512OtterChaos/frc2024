@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import com.ctre.phoenix.sensors.BasePigeonSimCollection;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
+import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
@@ -330,6 +331,7 @@ public class SwerveDrive extends SubsystemBase {
     public Trajectory getLogTrajectory() {return logTrajectory == null ? new Trajectory() : logTrajectory;}
 
 
+    AutoBuilder.
 
     //----- Simulation
     private final BasePigeonSimCollection gyroSim = gyro.getSimCollection(); // simulate pigeon

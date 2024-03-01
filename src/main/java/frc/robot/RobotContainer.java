@@ -19,21 +19,21 @@ import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.util.OCXboxController;
 
 public class RobotContainer {
-    private SwerveDrive swerve = new SwerveDrive();
+    private SwerveDrive drive = new SwerveDrive();
     private Climber climber = new Climber();
-    private Intake intake = new Intake();
-    private Feeder feeder = new Feeder();
-    private Shooter shooter = new Shooter();
-    private Arm arm = new Arm();
+    // private Intake intake = new Intake();
+    // private Feeder feeder = new Feeder();
+    // private Shooter shooter = new Shooter();
+    // private Arm arm = new Arm();
 
-    private AutoOptions autos = new AutoOptions(swerve,intake,arm,shooter,feeder);
+    private AutoOptions autos = new AutoOptions(drive);
     
     private OCXboxController driver = new OCXboxController(0);
-    // private OCXboxController operator = new OCXboxController(1);
+    private OCXboxController operator = new OCXboxController(1);
     
     public RobotContainer(){
         configureDriverBinds(driver);
-        // configureOperatorBinds(operator);
+        configureOperatorBinds(operator);
 
         //TODO: plug usb drive into roborio
         SignalLogger.start();
@@ -43,40 +43,49 @@ public class RobotContainer {
         return autos.getAuto();
     }
 
+    public void robotInit(){
+        // intake.setDefaultCommand(intake.setVoltageC(0));
+        climber.setDefaultCommand(null);
+    }
+
     private void configureDriverBinds(OCXboxController controller){
         //TODO: use real max drivespeed meters/second
-        swerve.setDefaultCommand(
+        drive.setDefaultCommand(
             run(()->
-                swerve.drive(
-                    controller.getForward()*swerve.getMaxLinearVelocityMeters(),
-                    controller.getStrafe()*swerve.getMaxLinearVelocityMeters(),
-                    controller.getTurn()*swerve.getMaxAngularVelocityRadians(),
+                drive.drive(
+                    controller.getForward()*drive.getMaxLinearVelocityMeters(),
+                    controller.getStrafe()*drive.getMaxLinearVelocityMeters(),
+                    controller.getTurn()*drive.getMaxAngularVelocityRadians(),
                     true
                 ),
-                swerve
+                drive
             )
         );
-        intake.setDefaultCommand(intake.setVoltageC(0));
-        climber.setDefaultCommand(null);
     
-        controller.rightTrigger().whileTrue(shooter.CShootTable(2));
-        controller.leftTrigger().whileTrue(intake.setVoltageInC());
+        // controller.rightTrigger().whileTrue(shooter.CShootTable(2));
+        // controller.leftTrigger().whileTrue(intake.setVoltageInC());
 
-        controller.leftStick().whileTrue(intake.setVoltageOutC());
+        // controller.leftStick().whileTrue(intake.setVoltageOutC());
 
-        controller.x().onTrue(arm.CSetAngle(0));
-        controller.a().whileTrue(shooter.CShootSubwoof());
-        controller.b().whileTrue(shooter.CShootAmp());
+        // controller.x().onTrue(arm.CSetAngle(0));
+        // controller.a().whileTrue(shooter.CShootSubwoof());
+        // controller.b().whileTrue(shooter.CShootAmp());
 
         controller.povUp().onTrue(climber.CSetMaxHeight());
         controller.povDown().onTrue(climber.CSetMinHeight());
 
+        controller.leftBumper().whileTrue(climber.setLeftVoltageUpC());
+        controller.rightBumper().whileTrue(climber.setRightVoltageUpC());
+
+        controller.leftTrigger().whileTrue(climber.setLeftVoltageDownC());
+        controller.rightTrigger().whileTrue(climber.setRightVoltageDownC());
+
         // reset the robot heading to 0
         controller.start()
             .onTrue(runOnce(()->
-                swerve.resetOdometry(
+                drive.resetOdometry(
                     new Pose2d(
-                        swerve.getPose().getTranslation(),
+                        drive.getPose().getTranslation(),
                         new Rotation2d()
                     )
                 )
@@ -85,5 +94,13 @@ public class RobotContainer {
     }
 
     private void configureOperatorBinds(OCXboxController controller) {
+        controller.povUp().onTrue(climber.CSetMaxHeight());
+        controller.povDown().onTrue(climber.CSetMinHeight());
+
+        controller.leftBumper().whileTrue(climber.setLeftVoltageUpC());
+        controller.rightBumper().whileTrue(climber.setRightVoltageUpC());
+
+        controller.leftTrigger().whileTrue(climber.setLeftVoltageDownC());
+        controller.rightTrigger().whileTrue(climber.setRightVoltageDownC());
     }
 }

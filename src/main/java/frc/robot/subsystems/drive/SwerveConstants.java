@@ -30,8 +30,8 @@ public class SwerveConstants {
     public static final boolean kInvertSteer = false;
     public static final boolean kInvertCancoder = false;
     // Physical properties
-    public static final double kTrackWidth = Units.inchesToMeters(18.5);
-    public static final double kTrackLength = Units.inchesToMeters(21.5);
+    public static final double kTrackWidth = Units.inchesToMeters(20.5);
+    public static final double kTrackLength = Units.inchesToMeters(18.5);
     
     public static final double kMaxLinearSpeed = Units.feetToMeters(15.5);
     public static final double kMaxAngularSpeed = Units.rotationsToRadians(2);
@@ -41,10 +41,10 @@ public class SwerveConstants {
     public static final double kSteerGearRatio = 12.8; // 12.8:1
 
     public enum Module {
-        FL(1, 7, 3, 3, -8.525, kTrackLength/2, kTrackWidth/2), // Front left
-        FR(2, 2, 6, 1, 103.799, kTrackLength/2, -kTrackWidth/2), // Front Right
-        BL(3, 1, 5, 0, 55.107, -kTrackLength/2, kTrackWidth/2), // Back Left
-        BR(4, 4, 0, 2, 65.215, -kTrackLength/2, -kTrackWidth/2); // Back Right
+        FL(1, 2, 6, 1, -172.353, kTrackLength/2, kTrackWidth/2), // Front Right
+        FR(2, 1, 5, 4, -104.414, kTrackLength/2, -kTrackWidth/2), // Back Left
+        BL(3, 7, 3, 3, 68.554, -kTrackLength/2, kTrackWidth/2), // Front left
+        BR(4, 4, 8, 2, 66.357, -kTrackLength/2, -kTrackWidth/2); // Back Right
 
         public final int moduleNum;
         public final int driveMotorID;

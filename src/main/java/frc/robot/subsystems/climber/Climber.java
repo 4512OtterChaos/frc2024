@@ -135,4 +135,20 @@ public class Climber extends SubsystemBase {
     public Command CStop(){
         return runOnce(()->stop());
     }
+
+    public Command setLeftVoltageUpC(){
+        return runOnce(()->setLeftVolts(kVoltageUp));
+    }
+
+    public Command setLeftVoltageDownC(){
+        return runOnce(()->setLeftVolts(kVoltageDown));
+    }
+
+    public Command setRightVoltageUpC(){
+        return runOnce(()->setLeftVolts(kVoltageUp));
+    }
+
+    public Command setRightVoltageDownC(){
+        return runOnce(()->setLeftVolts(kVoltageDown));
+    }
 }
