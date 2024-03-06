@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -136,6 +137,17 @@ public class Climber extends SubsystemBase {
         return runOnce(()->stop());
     }
 
+    public Command holdPositionC(){
+        return runOnce(()->{
+            setLeftRotations(leftEncoder.getPosition());
+            setRightRotations(rightEncoder.getPosition());
+        });
+    }
+
+    public Command setLeftVoltageC(double voltage){
+        return runOnce(()->setLeftVolts(voltage));
+    }
+
     public Command setLeftVoltageUpC(){
         return runOnce(()->setLeftVolts(kVoltageUp));
     }
@@ -144,11 +156,15 @@ public class Climber extends SubsystemBase {
         return runOnce(()->setLeftVolts(kVoltageDown));
     }
 
+    public Command setRightVoltageC(double voltage){
+        return runOnce(()->setRightVolts(voltage));
+    }
+
     public Command setRightVoltageUpC(){
-        return runOnce(()->setLeftVolts(kVoltageUp));
+        return runOnce(()->setRightVolts(kVoltageUp));
     }
 
     public Command setRightVoltageDownC(){
-        return runOnce(()->setLeftVolts(kVoltageDown));
+        return runOnce(()->setRightVolts(kVoltageDown));
     }
 }

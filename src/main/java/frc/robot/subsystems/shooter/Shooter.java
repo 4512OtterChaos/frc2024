@@ -13,28 +13,38 @@ public class Shooter extends SubsystemBase {
     private OCSparkMax rightMotor = new OCSparkMax(kRightMotorID, MotorType.kBrushless);
 
     public Shooter() {
-        rightMotor.setInverted(true);
+        leftMotor.enableVoltageCompensation(12);
+        rightMotor.enableVoltageCompensation(12);
+    }
 
-        leftMotor.enableVoltageCompensation(kShooterVoltage);
-        rightMotor.enableVoltageCompensation(kShooterVoltage);
+    public void setLeftVoltage(double voltage){
+        leftMotor.setVoltage(voltage);
+    }
+    public void setRightVoltage(double voltage){
+        rightMotor.setVoltage(voltage);
     }
 
     public void shootSubwoof(){
-        leftMotor.set(0.8);
-        rightMotor.set(0.75);
+        setLeftVoltage(9);
+        setRightVoltage(8);
     }
 
     public void shootAmp(){
-        leftMotor.set(0.3);
-        rightMotor.set(0.3);
+        setLeftVoltage(2);
+        setRightVoltage(2);
+    }
+
+    public void stop(){ 
+        setLeftVoltage(0);
+        setRightVoltage(0);
     }
 
     public void shootTable(double distance){
     // to be completed once we have the table
     }
 
-    public Command CShootSubwoof(){
-        return run(()->shootSubwoof());
+    public Command shootSubwoofC(){
+        return runOnce(()->shootSubwoof());
     }
 
     public Command CShootAmp(){
@@ -43,5 +53,11 @@ public class Shooter extends SubsystemBase {
 
     public Command CShootTable(double distance){
         return run(()->shootTable(distance));
+    }
+
+    public Command stopC() {
+        return runOnce(()-> {
+            stop();
+        });
     }
 }

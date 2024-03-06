@@ -52,11 +52,11 @@ public class Intake extends SubsystemBase{
     }
 
     public Command setVoltageInC(){
-        return run(()->setVoltage(2));
+        return run(()->setVoltage(7));
     }
 
     public Command setVoltageOutC(){
-        return run(()->setVoltage(-2));
+        return run(()->setVoltage(-7));
     }
 
     public Command setVelocityC(double velocity){

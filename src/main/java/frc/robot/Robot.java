@@ -18,11 +18,13 @@ public class Robot extends TimedRobot {
     
     @Override
     public void robotPeriodic() {
+        container.robotPeriodic();
         CommandScheduler.getInstance().run();
     }
     
     @Override
     public void autonomousInit() {
+        container.autoInit();
         container.getAuto().schedule();
     }
     

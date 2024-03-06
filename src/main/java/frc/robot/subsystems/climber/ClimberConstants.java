@@ -3,8 +3,8 @@ package frc.robot.subsystems.climber;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class ClimberConstants {
-    public static final int kLeftMotorID = 1;
-    public static final int kRightMotorID = 2;
+    public static final int kLeftMotorID = 6;
+    public static final int kRightMotorID = 7;
     public static final boolean kMotorInverted = false;
 
     public static final double kTopHeightRotations = 144; // motor rotations
@@ -20,6 +20,6 @@ public class ClimberConstants {
     public static final double kVoltageSaturation = 12;
     public static final int kCANTimeout = 100;
 
-    public static final int kVoltageUp = 4;
-    public static final int kVoltageDown = 4;
+    public static final double kVoltageUp = 7.5;
+    public static final double kVoltageDown = -7.5;
 }

@@ -32,9 +32,10 @@ public class SwerveConstants {
     // Physical properties
     public static final double kTrackWidth = Units.inchesToMeters(20.5);
     public static final double kTrackLength = Units.inchesToMeters(18.5);
+    public static final double kSwerveCenterRadius = Math.hypot(kTrackLength, kTrackWidth)/2;
     
-    public static final double kMaxLinearSpeed = Units.feetToMeters(15.5);
-    public static final double kMaxAngularSpeed = Units.rotationsToRadians(2);
+    public static final double kMaxLinearSpeed = Units.feetToMeters(17.5);
+    public static final double kMaxAngularSpeed = Units.rotationsToRadians(2.2);
     public static final double kWheelDiameter = Units.inchesToMeters(4);
     public static final double kWheelCircumference = kWheelDiameter*Math.PI;
     public static final double kDriveGearRatio = 6.12; // 6.12:1 L3 ratio

@@ -4,10 +4,12 @@ import static frc.robot.auto.AutoConstants.*;
 import static frc.robot.subsystems.drive.SwerveConstants.*;
 
 import java.util.Optional;
+import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix.sensors.BasePigeonSimCollection;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.AutoBuilderException;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
@@ -17,6 +19,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -24,6 +27,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -308,6 +313,10 @@ public class SwerveDrive extends SubsystemBase {
         return thetaController;
     }
 
+    public boolean flipAutoOrgin(){
+        return DriverStation.getAlliance().orElse(Alliance.Blue)==Alliance.Red;
+    }
+
     public void log(){
         Pose2d pose = getPose();
         LogUtil.logPose("Drive/Pose2d", getPose());
@@ -329,9 +338,7 @@ public class SwerveDrive extends SubsystemBase {
     }
     public void logTrajectory(Trajectory trajectory) {logTrajectory = trajectory;}
     public Trajectory getLogTrajectory() {return logTrajectory == null ? new Trajectory() : logTrajectory;}
-
-
-    AutoBuilder.
+    
 
     //----- Simulation
     private final BasePigeonSimCollection gyroSim = gyro.getSimCollection(); // simulate pigeon
