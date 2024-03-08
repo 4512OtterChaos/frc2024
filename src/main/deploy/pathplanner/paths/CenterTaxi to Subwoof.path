@@ -3,32 +3,42 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.0,
-        "y": 7.0
+        "x": 2.5985916359297114,
+        "y": 4.111664701961882
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0,
-        "y": 7.0
+        "x": 2.282849465983832,
+        "y": 4.139730672623739
       },
       "isLocked": true,
-      "linkedName": "AmpTaxi end"
+      "linkedName": "CenterTaxi End"
     },
     {
       "anchor": {
-        "x": 0.6758268427636399,
-        "y": 6.728463632910762
+        "x": 0.7088162780314161,
+        "y": 4.380630254138004
       },
       "prevControl": {
-        "x": 1.455249706169632,
-        "y": 7.178463632910766
+        "x": 1.2614242393399553,
+        "y": 3.9441991277144988
       },
       "nextControl": null,
       "isLocked": true,
-      "linkedName": "Subwoofer Amp Side"
+      "linkedName": "Subwoofer Source Side"
     }
   ],
   "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0.764281220490664,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    },
     {
       "waypointRelativePos": 0.5,
       "rotationDegrees": 0,
@@ -45,11 +55,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 60.0,
+    "rotation": -60.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "AmpSide",
+  "folder": "Center",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.42,
-        "y": 1.56
+        "x": 3.3470175202458665,
+        "y": 2.4557724329123873
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4199999999999955,
-        "y": 1.56
+        "x": 4.347017520245867,
+        "y": 2.4557724329123873
       },
       "isLocked": false,
-      "linkedName": "SourceTaxi start"
+      "linkedName": "Source Shoot"
     },
     {
       "anchor": {
-        "x": 4.025278477902761,
-        "y": 1.56
+        "x": 8.3,
+        "y": 2.45
       },
       "prevControl": {
-        "x": 3.025278477902761,
-        "y": 1.56
+        "x": 6.296218648547829,
+        "y": 1.4035807945226038
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "SourceTaxi end"
+      "linkedName": "n2"
     }
   ],
   "rotationTargets": [],
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "SourceTaxi",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

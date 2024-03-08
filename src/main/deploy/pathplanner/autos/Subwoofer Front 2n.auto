@@ -6,9 +6,9 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "to AmpTaxi"
+            "name": "ShootSubwoofer"
           }
         },
         {
@@ -18,7 +18,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "AmpTaxi"
+                  "pathName": "CenterNoteTaxi"
                 }
               },
               {
@@ -33,7 +33,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AmpTaxi to Subwoof"
+            "pathName": "CenterNoteTaxi to Subwoofer"
           }
         },
         {
@@ -45,6 +45,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "No Arm 2n's",
   "choreoAuto": false
 }

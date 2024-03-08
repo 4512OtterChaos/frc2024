@@ -8,27 +8,33 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6792566975374774,
-        "y": 6.7287730594115995
+        "x": 0.673733814708322,
+        "y": 6.726477635294641
       },
-      "isLocked": false,
-      "linkedName": null
+      "isLocked": true,
+      "linkedName": "Subwoofer Amp Side"
     },
     {
       "anchor": {
-        "x": 1.4198208681317652,
+        "x": 1.4,
         "y": 7.0
       },
       "prevControl": {
-        "x": 1.4183270733751696,
+        "x": 1.3985062052434043,
         "y": 6.9953998407450575
       },
       "nextControl": null,
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": "AmpTaxi start"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.0,
+      "rotationDegrees": 60.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -38,12 +44,12 @@
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 2.0,
     "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "AmpSide",
   "previewStartingState": {
     "rotation": 60.0,
     "velocity": 0

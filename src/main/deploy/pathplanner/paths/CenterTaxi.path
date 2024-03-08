@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.412804375466301,
+        "x": 1.4,
         "y": 4.111664701961882
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.412804375466301,
+        "x": 2.4,
         "y": 4.111664701961882
       },
-      "isLocked": false,
-      "linkedName": null
+      "isLocked": true,
+      "linkedName": "CenterTaxi Start"
     },
     {
       "anchor": {
@@ -24,8 +24,8 @@
         "y": 4.111664701961882
       },
       "nextControl": null,
-      "isLocked": false,
-      "linkedName": null
+      "isLocked": true,
+      "linkedName": "CenterTaxi End"
     }
   ],
   "rotationTargets": [],
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Center",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

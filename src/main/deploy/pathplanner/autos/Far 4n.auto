@@ -10,10 +10,16 @@
           "data": {
             "pathName": "SourceTaxi"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "far 4n to n1"
+          }
         }
       ]
     }
   },
-  "folder": "Taxi's",
+  "folder": null,
   "choreoAuto": false
 }

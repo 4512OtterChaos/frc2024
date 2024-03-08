@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4199999999999955,
-        "y": 1.56
+        "x": 2.42,
+        "y": 1.5600000000000005
       },
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": "SourceTaxi start"
     },
     {
       "anchor": {
-        "x": 4.025278477902761,
-        "y": 1.56
+        "x": 8.3,
+        "y": 0.75
       },
       "prevControl": {
-        "x": 3.025278477902761,
-        "y": 1.56
+        "x": 7.300000000000001,
+        "y": 0.75
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "SourceTaxi end"
+      "linkedName": "n1"
     }
   ],
   "rotationTargets": [],
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "SourceTaxi",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

@@ -3,32 +3,38 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.42,
-        "y": 1.56
+        "x": 0.7088162780314161,
+        "y": 4.380630254138004
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4199999999999955,
-        "y": 1.56
+        "x": 0.7067232499760983,
+        "y": 4.378644256521883
       },
-      "isLocked": false,
-      "linkedName": "SourceTaxi start"
+      "isLocked": true,
+      "linkedName": "Subwoofer Source Side"
     },
     {
       "anchor": {
-        "x": 4.025278477902761,
-        "y": 1.56
+        "x": 1.4,
+        "y": 4.111664701961882
       },
       "prevControl": {
-        "x": 3.025278477902761,
-        "y": 1.56
+        "x": 1.3985062052434043,
+        "y": 4.107064542706939
       },
       "nextControl": null,
-      "isLocked": false,
-      "linkedName": "SourceTaxi end"
+      "isLocked": true,
+      "linkedName": "CenterTaxi Start"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.0,
+      "rotationDegrees": -60.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -38,14 +44,14 @@
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 2.0,
     "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "SourceTaxi",
+  "folder": "Center",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": -59.14579549410293,
     "velocity": 0
   },
   "useDefaultConstraints": true

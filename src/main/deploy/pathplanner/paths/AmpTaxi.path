@@ -3,15 +3,15 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4198208681317652,
+        "x": 1.4,
         "y": 7.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.419820868131765,
+        "x": 2.3999999999999995,
         "y": 7.0
       },
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": "AmpTaxi start"
     },
     {
@@ -24,8 +24,8 @@
         "y": 7.0
       },
       "nextControl": null,
-      "isLocked": false,
-      "linkedName": null
+      "isLocked": true,
+      "linkedName": "AmpTaxi end"
     }
   ],
   "rotationTargets": [],
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "AmpSide",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
