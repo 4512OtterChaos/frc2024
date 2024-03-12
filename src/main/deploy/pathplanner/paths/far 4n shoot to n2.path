@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.347017520245867,
-        "y": 2.4557724329123873
+        "x": 6.282250285305352,
+        "y": 0.7484258843135376
       },
       "isLocked": false,
       "linkedName": "Source Shoot"
@@ -20,8 +20,8 @@
         "y": 2.45
       },
       "prevControl": {
-        "x": 6.296218648547829,
-        "y": 1.4035807945226038
+        "x": 5.8027899531653135,
+        "y": 2.3739133518126896
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Far 4n",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

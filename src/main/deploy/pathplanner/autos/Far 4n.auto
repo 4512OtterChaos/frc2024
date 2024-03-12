@@ -8,13 +8,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SourceTaxi"
+            "pathName": "far 4n to n1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "far 4n to n1"
+            "pathName": "far 4n n1 to shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "far 4n shoot to n2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "far 4n n2 to shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "far 4n shoot to n3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "far 4n n3 to shoot"
           }
         }
       ]

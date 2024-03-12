@@ -1,12 +1,14 @@
 {
-  "robotWidth": 0.9,
-  "robotLength": 0.9,
+  "robotWidth": 0.86,
+  "robotLength": 0.941,
   "holonomicMode": true,
   "pathFolders": [
     "AmpSide",
     "Center",
     "CenterNote",
-    "SourceTaxi"
+    "Close 4n",
+    "SourceTaxi",
+    "Far 4n"
   ],
   "autoFolders": [
     "No Arm 2n's",

@@ -3,29 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.42,
-        "y": 1.56
+        "x": 1.4,
+        "y": 4.111664701961882
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.42,
-        "y": 1.5600000000000005
+        "x": 2.4,
+        "y": 4.111664701961882
       },
       "isLocked": true,
-      "linkedName": "SourceTaxi start"
+      "linkedName": "CenterTaxi Start"
     },
     {
       "anchor": {
-        "x": 8.3,
-        "y": 0.75
+        "x": 2.5985916359297114,
+        "y": 4.111664701961882
       },
       "prevControl": {
-        "x": 7.300000000000001,
-        "y": 0.75
+        "x": 2.130825458232113,
+        "y": 4.092954054853979
+      },
+      "nextControl": {
+        "x": 2.6056025221279073,
+        "y": 4.111945137409809
+      },
+      "isLocked": true,
+      "linkedName": "CenterTaxi End"
+    },
+    {
+      "anchor": {
+        "x": 2.3,
+        "y": 4.11
+      },
+      "prevControl": {
+        "x": 2.334873473735551,
+        "y": 4.1046482092964185
       },
       "nextControl": null,
-      "isLocked": false,
-      "linkedName": "n1"
+      "isLocked": true,
+      "linkedName": "close n1 end"
     }
   ],
   "rotationTargets": [],
@@ -43,7 +59,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Far 4n",
+  "folder": "Close 4n",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
