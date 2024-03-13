@@ -46,29 +46,31 @@ public class AutoOptions {
             ()->drive.getChassisSpeeds(),
             (targetChassisSpeeds)->drive.setChassisSpeeds(targetChassisSpeeds, false, true),
             AutoConstants.kPathConfig,
-            ()->drive.flipAutoOrgin(),
+            ()->drive.getIsDrivingMirrored(),
             drive
         );
 
         addAutoMethods();
     }
 
+    private Command resetInitialOdomC() {
+        return runOnce(()->{
+            Rotation2d initialRot = new Rotation2d();
+            if(drive.getIsDrivingMirrored()){
+                initialRot = new Rotation2d(Math.PI);
+            }
+            drive.resetOdometry(
+                new Pose2d(
+                    drive.getPose().getTranslation(),
+                    initialRot
+                )
+            );
+        });
+    }
+
     public void periodic(){
         if (!autosSetup && !DriverStation.getAlliance().isEmpty()){
-            autoOptions.setDefaultOption("none",  
-                run(()->{
-                    Rotation2d initialRot = new Rotation2d();
-                    if(drive.flipAutoOrgin()){
-                        initialRot = new Rotation2d(Math.PI);
-                    }
-                    drive.resetOdometry(
-                        new Pose2d(
-                            drive.getPose().getTranslation(),
-                            initialRot
-                        )
-                    );
-                })
-            );
+            autoOptions.setDefaultOption("none", resetInitialOdomC());
             addDriveOnlyOptions();
             addArmlessShooterOptions();
             autosSetup = true;
@@ -97,7 +99,7 @@ public class AutoOptions {
         autoOptions.addOption("Source Side Subwoofer 2n",
             AutoBuilder.buildAuto("Source Side Subwoofer 2n")
         );
-        autoOptions.addOption("Shoot1Note", superstructure.shootSubwoof().withTimeout(4));
+        autoOptions.addOption("Shoot1Note", resetInitialOdomC().andThen(superstructure.shootSubwoof().withTimeout(4)));
     }
 
     public Command getAuto(){

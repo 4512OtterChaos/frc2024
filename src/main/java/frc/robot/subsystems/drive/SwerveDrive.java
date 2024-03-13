@@ -214,6 +214,10 @@ public class SwerveDrive extends SubsystemBase {
 
     public boolean getIsFieldRelative() {return isFieldRelative;}
 
+    public boolean getIsDrivingMirrored(){
+        return DriverStation.getAlliance().orElse(Alliance.Blue)==Alliance.Red;
+    }
+
     public Pose2d getPose() {
         return poseEstimator.getEstimatedPosition();
     }
@@ -313,9 +317,6 @@ public class SwerveDrive extends SubsystemBase {
         return thetaController;
     }
 
-    public boolean flipAutoOrgin(){
-        return DriverStation.getAlliance().orElse(Alliance.Blue)==Alliance.Red;
-    }
 
     public void log(){
         Pose2d pose = getPose();

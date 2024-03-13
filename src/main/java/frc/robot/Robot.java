@@ -92,7 +92,7 @@ public class Robot extends TimedRobot {
         swerve.setDefaultCommand(
             run(()->{
                     int invert=1;
-                    if (swerve.flipAutoOrgin()){
+                    if (swerve.getIsDrivingMirrored()){
                         invert=-1;
                     }
                     swerve.drive(
