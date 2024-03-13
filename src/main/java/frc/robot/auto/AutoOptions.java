@@ -39,7 +39,11 @@ public class AutoOptions {
     private Shooter shooter;
     private Feeder feeder;
     private Superstructure superstructure;
+
+    private String setupType;
+
     private boolean autosSetup = false;
+
 
     public AutoOptions(SwerveDrive drive, Intake intake, Shooter shooter, Feeder feeder, Superstructure superstructure) {
         this.drive=drive;
@@ -48,19 +52,30 @@ public class AutoOptions {
         this.feeder = feeder;
         this.superstructure = superstructure;
 
+        setupType = "armless";
+
         SmartDashboard.putData(autoOptions);
         addAutoMethods();
-        
-        // autoOptions.setDefaultOption("none", null);
-        // addDriveOnlyOptions();
     }
     public AutoOptions(SwerveDrive drive) {
-        // this.drive=drive;
-        // autoOptions.setDefaultOption("none", null);
-        // addDriveOnlyOptions();
+        this.drive=drive;
+
+        setupType = "drive";
+
+        SmartDashboard.putData(autoOptions);
     }
 
     public void autoInit(){
+        setUpAutoOptions();
+    }
+
+    public void robotPeriodic(){
+        if ((!DriverStation.getAlliance().isEmpty())){
+            setUpAutoOptions();
+        }
+    }
+
+    public void setUpAutoOptions(){
         if (autosSetup==false){
             autoBuilderConfig(drive);
             autoOptions.setDefaultOption("none",  
@@ -78,31 +93,9 @@ public class AutoOptions {
                 })
             );
             addDriveOnlyOptions();
-            autosSetup=true;
-        }
-    }
-
-    public void robotPeriodic(){
-        
-        if ((!DriverStation.getAlliance().isEmpty())&&(autosSetup==false)){
-            autoBuilderConfig(drive);
-            autoOptions.setDefaultOption("none",  
-                run(()->{
-                    double gyroRotation = 0;
-                    if(drive.flipAutoOrgin()){
-                        gyroRotation = 180;
-                    }
-                    drive.resetOdometry(
-                        new Pose2d(
-                            drive.getPose().getTranslation(),
-                            new Rotation2d(gyroRotation)
-                        )
-                    );
-                })
-            );
-            addDriveOnlyOptions();
-
-            autoOptions.addOption("Shoot1Note", superstructure.shootSubwoof().withTimeout(4));
+            if (setupType!="drive"){
+                addArmlessShooterOptions();
+            }
             autosSetup=true;
         }
     }
@@ -117,6 +110,19 @@ public class AutoOptions {
         autoOptions.addOption("SourceTaxi",
             AutoBuilder.buildAuto("SourceTaxi")
         );
+    }
+
+    public void addArmlessShooterOptions(){
+        autoOptions.addOption("Amp Side Subwoofer 2n",
+            AutoBuilder.buildAuto("Amp Side Subwoofer 2n")
+        );
+        autoOptions.addOption("Subwoofer Front 2n",
+            AutoBuilder.buildAuto("Subwoofer Front 2n")
+        );
+        autoOptions.addOption("Source Side Subwoofer 2n",
+            AutoBuilder.buildAuto("Source Side Subwoofer 2n")
+        );
+        autoOptions.addOption("Shoot1Note", superstructure.shootSubwoof().withTimeout(4));
     }
 
     public Command getAuto(){

@@ -4,15 +4,15 @@
     {
       "anchor": {
         "x": 2.9,
-        "y": 5.55
+        "y": 7.0
       },
       "prevControl": null,
       "nextControl": {
         "x": 1.9,
-        "y": 5.55
+        "y": 7.0
       },
-      "isLocked": true,
-      "linkedName": "Center Note Taxi"
+      "isLocked": false,
+      "linkedName": "AmpTaxi end"
     },
     {
       "anchor": {
@@ -24,7 +24,7 @@
         "y": 5.5
       },
       "nextControl": null,
-      "isLocked": true,
+      "isLocked": false,
       "linkedName": "Subwoofer Front"
     }
   ],
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "CenterNote",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

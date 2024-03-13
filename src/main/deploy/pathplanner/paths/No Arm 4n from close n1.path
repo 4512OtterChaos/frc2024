@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.9,
-        "y": 5.55
+        "x": 2.5985916359297114,
+        "y": 4.111664701961882
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9,
-        "y": 5.55
+        "x": 1.5985916359297114,
+        "y": 4.111664701961882
       },
-      "isLocked": true,
-      "linkedName": "Center Note Taxi"
+      "isLocked": false,
+      "linkedName": "CenterTaxi End"
     },
     {
       "anchor": {
@@ -24,7 +24,7 @@
         "y": 5.5
       },
       "nextControl": null,
-      "isLocked": true,
+      "isLocked": false,
       "linkedName": "Subwoofer Front"
     }
   ],
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "CenterNote",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

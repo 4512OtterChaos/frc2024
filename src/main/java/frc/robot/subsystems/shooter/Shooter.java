@@ -4,6 +4,7 @@ import static frc.robot.subsystems.shooter.ShooterConstants.*;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.OCSparkMax;
@@ -11,6 +12,7 @@ import frc.robot.util.OCSparkMax;
 public class Shooter extends SubsystemBase {
     private OCSparkMax leftMotor = new OCSparkMax(kLeftMotorID, MotorType.kBrushless);
     private OCSparkMax rightMotor = new OCSparkMax(kRightMotorID, MotorType.kBrushless);
+    private DigitalInput sensor = new DigitalInput(kSensorID);
 
     public Shooter() {
         leftMotor.enableVoltageCompensation(12);
@@ -41,6 +43,10 @@ public class Shooter extends SubsystemBase {
 
     public void shootTable(double distance){
     // to be completed once we have the table
+    }
+
+    public boolean sensedNote(){
+        return !sensor.get();
     }
 
     public Command shootSubwoofC(){

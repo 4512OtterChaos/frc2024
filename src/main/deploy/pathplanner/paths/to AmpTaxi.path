@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 0.6758268427636399,
-        "y": 6.728463632910762
+        "y": 6.73
       },
       "prevControl": null,
       "nextControl": {
         "x": 0.673733814708322,
-        "y": 6.726477635294641
+        "y": 6.72801400238388
       },
       "isLocked": true,
       "linkedName": "Subwoofer Amp Side"

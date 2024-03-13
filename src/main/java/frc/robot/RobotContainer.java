@@ -92,7 +92,7 @@ public class RobotContainer {
         controller.b()
             .whileTrue(superstructure.intake());
         controller.leftStick()
-            .whileTrue(superstructure.outTake());        
+            .whileTrue(superstructure.outtake());        
         controller.a().whileTrue(superstructure.shootSubwoof());
 
         controller.leftBumper()

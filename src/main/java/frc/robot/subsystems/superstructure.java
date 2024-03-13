@@ -26,9 +26,6 @@ public class Superstructure {
 
     public Command shootSubwoof(){
         return sequence(
-            feeder.setVoltageOutC(),
-            waitSeconds(0.15),
-            feeder.setVoltageC(0),
             shooter.shootSubwoofC(),
             waitSeconds(0.5),
             feeder.setVoltageInC(),
@@ -43,13 +40,13 @@ public class Superstructure {
         return parallel(
             intake.setVoltageInC(),
             feeder.setVoltageInC()
-        ).until(()->feeder.isStalled()).finallyDo(()->{
+        ).until(()->shooter.sensedNote()).finallyDo(()->{
             intake.setVoltage(0);
             feeder.setVoltage(0);
         });
     }
 
-    public Command outTake(){
+    public Command outtake(){
         return parallel(
             intake.setVoltageOutC(),
             feeder.setVoltageOutC()
