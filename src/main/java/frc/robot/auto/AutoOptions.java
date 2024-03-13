@@ -54,30 +54,24 @@ public class AutoOptions {
     }
 
     public void periodic(){
-        if ((!DriverStation.getAlliance().isEmpty())){
-            setUpAutoOptions();
-        }
-    }
-
-    public void setUpAutoOptions(){
-        if (!autosSetup){
+        if (!autosSetup && !DriverStation.getAlliance().isEmpty()){
             autoOptions.setDefaultOption("none",  
                 run(()->{
-                    double gyroRotation = 0;
+                    Rotation2d initialRot = new Rotation2d();
                     if(drive.flipAutoOrgin()){
-                        gyroRotation = 180;
+                        initialRot = new Rotation2d(Math.PI);
                     }
                     drive.resetOdometry(
                         new Pose2d(
                             drive.getPose().getTranslation(),
-                            new Rotation2d(gyroRotation)
+                            initialRot
                         )
                     );
                 })
             );
             addDriveOnlyOptions();
             addArmlessShooterOptions();
-            autosSetup=true;
+            autosSetup = true;
         }
     }
 

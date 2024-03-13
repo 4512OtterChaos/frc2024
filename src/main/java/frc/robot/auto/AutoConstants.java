@@ -1,6 +1,7 @@
 package frc.robot.auto;
 
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import frc.robot.subsystems.drive.SwerveConstants;
 
@@ -33,6 +34,8 @@ public class AutoConstants {
 
     // The max speed used here is for ensuring rotating while translating doesnt command more speed than is possible
     public static final HolonomicPathFollowerConfig kPathConfig = new HolonomicPathFollowerConfig(
-        kMaxLinearSpeed, SwerveConstants.kSwerveCenterRadius, null
+        kMaxLinearSpeed,
+        SwerveConstants.kSwerveCenterRadius,
+        new ReplanningConfig()
     );
 }
