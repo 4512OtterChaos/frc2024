@@ -1,24 +1,14 @@
 package frc.robot.auto;
 
-import static frc.robot.subsystems.drive.SwerveConstants.kSwerveCenterRadius;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.function.BooleanSupplier;
 
-import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,7 +16,6 @@ import static edu.wpi.first.wpilibj2.command.Commands.*;
 
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.arm.Arm;
-import frc.robot.subsystems.drive.SwerveConstants;
 import frc.robot.subsystems.drive.SwerveDrive;
 import frc.robot.subsystems.feeder.Feeder;
 import frc.robot.subsystems.intake.Intake;
@@ -40,10 +29,7 @@ public class AutoOptions {
     private Feeder feeder;
     private Superstructure superstructure;
 
-    private String setupType;
-
     private boolean autosSetup = false;
-
 
     public AutoOptions(SwerveDrive drive, Intake intake, Shooter shooter, Feeder feeder, Superstructure superstructure) {
         this.drive=drive;
@@ -52,32 +38,29 @@ public class AutoOptions {
         this.feeder = feeder;
         this.superstructure = superstructure;
 
-        setupType = "armless";
-
         SmartDashboard.putData(autoOptions);
+
+        AutoBuilder.configureHolonomic(
+            ()->drive.getPose(),
+            (resetPose)->drive.resetOdometry(resetPose),
+            ()->drive.getChassisSpeeds(),
+            (targetChassisSpeeds)->drive.setChassisSpeeds(targetChassisSpeeds, false, true),
+            AutoConstants.kPathConfig,
+            ()->drive.flipAutoOrgin(),
+            drive
+        );
+
         addAutoMethods();
     }
-    public AutoOptions(SwerveDrive drive) {
-        this.drive=drive;
 
-        setupType = "drive";
-
-        SmartDashboard.putData(autoOptions);
-    }
-
-    public void autoInit(){
-        setUpAutoOptions();
-    }
-
-    public void robotPeriodic(){
+    public void periodic(){
         if ((!DriverStation.getAlliance().isEmpty())){
             setUpAutoOptions();
         }
     }
 
     public void setUpAutoOptions(){
-        if (autosSetup==false){
-            autoBuilderConfig(drive);
+        if (!autosSetup){
             autoOptions.setDefaultOption("none",  
                 run(()->{
                     double gyroRotation = 0;
@@ -93,9 +76,7 @@ public class AutoOptions {
                 })
             );
             addDriveOnlyOptions();
-            if (setupType!="drive"){
-                addArmlessShooterOptions();
-            }
+            addArmlessShooterOptions();
             autosSetup=true;
         }
     }
@@ -129,26 +110,8 @@ public class AutoOptions {
         return Optional.ofNullable(autoOptions.getSelected()).orElse(none());
     }
 
-    public HolonomicPathFollowerConfig pathConfig = new HolonomicPathFollowerConfig(Units.feetToMeters(7), kSwerveCenterRadius, null);
-    
-    private void autoBuilderConfig(SwerveDrive drive){
-        AutoBuilder.configureHolonomic(
-            ()->drive.getPose(),
-            (resetPose)->drive.resetOdometry(resetPose),
-            ()->drive.getChassisSpeeds(),
-            (targetChassisSpeeds)->drive.setChassisSpeeds(targetChassisSpeeds, false, true),
-            pathConfig,
-            ()->drive.flipAutoOrgin(),
-            drive
-        );
-    }
-
     private void addAutoMethods(){
         NamedCommands.registerCommand("Intake", superstructure.intake());
         NamedCommands.registerCommand("ShootSubwoofer", superstructure.shootSubwoof());
     }
-
-    // private void addAutoMethods(){
-    //     AutoBuilder.
-    // }
 }
