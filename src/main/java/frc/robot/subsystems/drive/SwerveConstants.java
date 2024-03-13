@@ -34,7 +34,7 @@ public class SwerveConstants {
     public static final double kTrackLength = Units.inchesToMeters(18.5);
     public static final double kSwerveCenterRadius = Math.hypot(kTrackLength, kTrackWidth)/2;
     
-    public static final double kMaxLinearSpeed = Units.feetToMeters(17.5);
+    public static final double kMaxLinearSpeed = Units.feetToMeters(17);
     public static final double kMaxAngularSpeed = Units.rotationsToRadians(2.2);
     public static final double kWheelDiameter = Units.inchesToMeters(4);
     public static final double kWheelCircumference = kWheelDiameter*Math.PI;

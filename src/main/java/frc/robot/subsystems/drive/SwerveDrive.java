@@ -351,7 +351,7 @@ public class SwerveDrive extends SubsystemBase {
 
         double chassisOmega = getChassisSpeeds().omegaRadiansPerSecond;
         chassisOmega = Math.toDegrees(chassisOmega);
-        gyroSim.addHeading(chassisOmega*0.02);
+        gyroSim.addHeading(chassisOmega*Robot.kDefaultPeriod);
     }
 
     public double getCurrentDraw(){
