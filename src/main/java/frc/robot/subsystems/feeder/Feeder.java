@@ -5,6 +5,7 @@ import static frc.robot.subsystems.feeder.FeederConstants.*;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,6 +13,8 @@ import frc.robot.util.OCSparkMax;
 
 public class Feeder extends SubsystemBase {
     private OCSparkMax feederMotor = new OCSparkMax(kMotorID, MotorType.kBrushless);
+    private DigitalInput sensor = new DigitalInput(kSensorID);
+
     private double lastFreeTime;
 
     public Feeder(){
@@ -20,9 +23,21 @@ public class Feeder extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (feederCurrent()<=kStallCurrent){
-            lastFreeTime=Timer.getFPGATimestamp();
+        if (getFeederCurrent() <= kStallCurrent){
+            lastFreeTime = Timer.getFPGATimestamp();
         }
+    }
+
+    public boolean isNoteSensed(){
+        return !sensor.get();
+    }
+
+    public double getFeederCurrent(){
+        return feederMotor.getOutputCurrent();
+    }
+
+    public boolean isStalled(){
+        return Timer.getFPGATimestamp() >= (lastFreeTime + kStallTime);
     }
 
     public void setVoltage(double voltage){
@@ -30,16 +45,8 @@ public class Feeder extends SubsystemBase {
         feederMotor.setVoltage(voltage);
     }
 
-    public double feederCurrent(){
-        return feederMotor.getOutputCurrent();
-    }
-
-    public boolean isStalled(){
-        return Timer.getFPGATimestamp()>=(lastFreeTime+kStallTime);
-    }
-
     public Command setVoltageC(double voltage){
-        return run(()->setVoltage(voltage));
+        return runOnce(()->setVoltage(voltage));
     }
     
     public Command setVoltageInC(){

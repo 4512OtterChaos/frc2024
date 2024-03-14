@@ -40,7 +40,7 @@ public class Superstructure {
         return parallel(
             intake.setVoltageInC(),
             feeder.setVoltageInC()
-        ).until(()->shooter.sensedNote()).finallyDo(()->{
+        ).until(()->feeder.isNoteSensed()).finallyDo(()->{
             intake.setVoltage(0);
             feeder.setVoltage(0);
         });
