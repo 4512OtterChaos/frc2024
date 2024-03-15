@@ -11,12 +11,15 @@ import com.ctre.phoenix6.SignalLogger;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auto.AutoOptions;
+import frc.robot.subsystems.ShotMap;
 import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.drive.SwerveDrive;
 import frc.robot.subsystems.feeder.Feeder;
@@ -30,14 +33,15 @@ public class Robot extends TimedRobot {
     private Climber climber = new Climber();
     private Intake intake = new Intake();
     private Feeder feeder = new Feeder();
-    // private Arm arm = new Arm();
+    private Arm arm = new Arm();
+    // private Arm arm = null;
     private Shooter shooter = new Shooter();
 
     private Vision vision = new Vision();
 
-    private Superstructure superstructure = new Superstructure(swerve, intake, shooter, feeder);
+    private Superstructure superstructure = new Superstructure(swerve, intake, arm, shooter, feeder);
 
-    private AutoOptions autos = new AutoOptions(swerve, intake, shooter, feeder, superstructure);
+    private AutoOptions autos = new AutoOptions(swerve, intake, arm, shooter, feeder, superstructure);
     
     private OCXboxController driver = new OCXboxController(0);
     private OCXboxController operator = new OCXboxController(1);
@@ -48,8 +52,12 @@ public class Robot extends TimedRobot {
         // configureOperatorBinds(operator);
 
         //TODO: plug usb drive into roborio
+        DataLogManager.start();
         SignalLogger.start();
 
+        shooter.setDefaultCommand(shooter.stopC());
+        arm.setDefaultCommand(arm.setRotationC(ShotMap.kIdle));
+        feeder.setDefaultCommand(feeder.setVoltageC(0));
         climber.setDefaultCommand(climber.holdPositionC());
     }
     
@@ -88,7 +96,6 @@ public class Robot extends TimedRobot {
     //----- Bindings
 
     private void configureDriverBinds(OCXboxController controller){
-        //TODO: use real max drivespeed meters/second
         swerve.setDefaultCommand(
             run(()->{
                     int invert=1;
@@ -105,42 +112,57 @@ public class Robot extends TimedRobot {
                 swerve
             )
         );
-    
-        // controller.rightTrigger().whileTrue(shooter.CShootTable(2));
-        // controller.b().whileTrue(shooter.CShootAmp());
-        // controller.x().onTrue(arm.CSetAngle(0));
 
+        // RIGHT TRIGGER: INTAKE
+        controller.rightTrigger().whileTrue(superstructure.intake());
+
+        // RIGHT BUMPER ONLY: SUBWOOFER
+        controller.rightBumper().and(controller.leftBumper().negate())
+                .whileTrue(superstructure.shootSubwoof());
+        // LEFT BUMPER: ARM TO AMP
+        // Runs until let go
+        controller.leftBumper().whileTrue(
+            parallel(
+                arm.setRotationC(ShotMap.kAmp),
+                idle() // hold rotation until button is let go
+            )
+        );
+        // LEFT AND RIGHT BUMPERS: SHOOT AMP
+        // Runs until let go
+        controller.rightBumper().and(controller.leftBumper()).whileTrue(
+            sequence(
+                shooter.setVoltageC(3, 3),
+                waitSeconds(0.25),
+                feeder.setVoltageInC()
+            )
+        );
+        // LEFT TRIGGER: AUTO SHOOT
+        // controller.leftTrigger()
+    
         // controller.povUp().onTrue(climber.CSetMaxHeight());
         controller.povDown().onTrue(climber.CSetMinHeight());
 
-        controller.b()
-            .whileTrue(superstructure.intake());
         controller.leftStick()
             .whileTrue(superstructure.outtake());        
-        controller.a().whileTrue(superstructure.shootSubwoof());
 
-        controller.leftBumper()
-            .whileTrue(climber.setLeftVoltageUpC())
-            .onFalse(climber.setLeftVoltageC(0));
-        controller.rightBumper()
-            .whileTrue(climber.setRightVoltageUpC())
-            .onFalse(climber.setRightVoltageC(0));
+        controller.y()
+            .whileTrue(climber.setVoltageUpC().repeatedly());
 
-        controller.leftTrigger()
-            .whileTrue(climber.setLeftVoltageDownC())
-            .onFalse(climber.setLeftVoltageC(0));
-        controller.rightTrigger()
-            .whileTrue(climber.setRightVoltageDownC())
-            .onFalse(climber.setRightVoltageC(0));
+        controller.x().and(controller.b().negate())
+            .whileTrue(climber.setVoltageUpLeftC().repeatedly());
+        controller.b().and(controller.x().negate())
+            .whileTrue(climber.setVoltageUpRightC().repeatedly());
 
-
-        // reset the robot heading to 0
+        controller.a()
+            .whileTrue(climber.setVoltageDownC().repeatedly());
+                
+        // reset the robot heading forward
         controller.start()
             .onTrue(runOnce(()->
                 swerve.resetOdometry(
                     new Pose2d(
                         swerve.getPose().getTranslation(),
-                        new Rotation2d()
+                        swerve.getIsDrivingMirrored() ? new Rotation2d(Math.PI) : new Rotation2d()
                     )
                 )
             )
@@ -151,11 +173,16 @@ public class Robot extends TimedRobot {
         // controller.povUp().onTrue(climber.CSetMaxHeight());
         controller.povDown().onTrue(climber.CSetMinHeight());
 
-        controller.leftBumper().whileTrue(climber.setLeftVoltageUpC());
-        controller.rightBumper().whileTrue(climber.setRightVoltageUpC());
+        controller.y()
+            .whileTrue(climber.setVoltageUpC().repeatedly());
 
-        controller.leftTrigger().whileTrue(climber.setLeftVoltageDownC());
-        controller.rightTrigger().whileTrue(climber.setRightVoltageDownC());
+        controller.x().and(controller.b().negate())
+            .whileTrue(climber.setVoltageUpLeftC().repeatedly());
+        controller.b().and(controller.x().negate())
+            .whileTrue(climber.setVoltageUpRightC().repeatedly());
+
+        controller.a()
+            .whileTrue(climber.setVoltageDownC().repeatedly());
     }
 
 

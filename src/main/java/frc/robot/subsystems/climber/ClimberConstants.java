@@ -9,6 +9,7 @@ public class ClimberConstants {
 
     public static final double kTopHeightRotations = 144; // motor rotations
     public static final double kBottomHeightRotations = 0;
+    public static final double kToleranceRotations = 1;
 
     public static final double kP = .3;
     public static final double kI = 0;
@@ -20,6 +21,6 @@ public class ClimberConstants {
     public static final double kVoltageSaturation = 12;
     public static final int kCANTimeout = 100;
 
-    public static final double kVoltageUp = 7.5;
-    public static final double kVoltageDown = -7.5;
+    public static final double kVoltageUp = 10;
+    public static final double kVoltageDown = -10;
 }

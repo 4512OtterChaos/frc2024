@@ -21,6 +21,10 @@ public class ArmConstants {
     // shooter_angle == -arm_angle + offset
     public static final Rotation2d kShooterAngleOffset = Rotation2d.fromDegrees(34.5);
     public static final Rotation2d kMaxAngle = Rotation2d.fromDegrees(95);
+    public static final Rotation2d kAngleTolerance = Rotation2d.fromDegrees(1);
+
+    public static final double kStallThresholdAmps = 20;
+    public static final double kStallThresholdSeconds = 0.5;
 
     // (applied to left motor, right motor follows)
     public static final TalonFXConfiguration kConfig = new TalonFXConfiguration();
@@ -36,11 +40,11 @@ public class ArmConstants {
         current.StatorCurrentLimitEnable = true;
         current.StatorCurrentLimit = 40;
 
-        SoftwareLimitSwitchConfigs limits = kConfig.SoftwareLimitSwitch;
-        limits.ForwardSoftLimitEnable = true;
-        limits.ForwardSoftLimitThreshold = kMaxAngle.getRotations();
-        limits.ReverseSoftLimitEnable = true;
-        limits.ReverseSoftLimitThreshold = kHomeAngle.getRotations();
+        // SoftwareLimitSwitchConfigs limits = kConfig.SoftwareLimitSwitch;
+        // limits.ForwardSoftLimitEnable = true;
+        // limits.ForwardSoftLimitThreshold = kMaxAngle.getRotations();
+        // limits.ReverseSoftLimitEnable = true;
+        // limits.ReverseSoftLimitThreshold = kHomeAngle.getRotations();
 
         Slot0Configs control = kConfig.Slot0;
         control.kP = 0;

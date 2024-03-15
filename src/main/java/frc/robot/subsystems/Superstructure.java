@@ -19,24 +19,28 @@ public class Superstructure {
     private Shooter shooter;
     private Feeder feeder;
 
-    public Superstructure(SwerveDrive drive, Intake intake, Shooter shooter, Feeder feeder) {
+    public Superstructure(SwerveDrive drive, Intake intake, Arm arm, Shooter shooter, Feeder feeder) {
         this.drive = drive;
         this.intake = intake;
+        this.arm = arm;
         this.shooter = shooter;
         this.feeder = feeder;
     }
 
-    public Command shootSubwoof(){
-        return sequence(
-            shooter.shootSubwoofC(),
-            waitSeconds(0.5),
-            feeder.setVoltageInC(),
-            waitSeconds(1)
-        ).until(()->shooter.shotNote())
-        .finallyDo(()-> {
-            shooter.stop();
-            feeder.setVoltage(0);
-        });
+    /** Sets the shooter and arm states for a shot. Finishes when the shooter and arm are ready for shooting. */
+    public Command setShotState(ShotMap.State state) {
+        return parallel(
+            shooter.setVelocityC(state),
+            arm.setRotationC(state)
+        );
+    }
+
+    /** 
+     * Feeds note into shooter until shot is detected. Consider if a timeout is needed.
+     * This may not work for slow speeds.
+     */
+    public Command feed() {
+        return feeder.setVoltageInC().until(shooter::isShotDetected).finallyDo(()->feeder.setVoltage(0));
     }
 
     public Command intake(){
@@ -59,21 +63,17 @@ public class Superstructure {
         });
     }
 
-    public Command setShooterState(Shooter.State state){
-        return new StartEndCommand(
-            ()->{
-                shooter.setLeftRPM(state.leftRPM);
-                shooter.setRightRPM(state.rightRPM);
-                arm.setAngle(state.armDeg);
-            },
-            ()->{
-                shooter.stop();
-                arm.stop();
-            },
-            shooter,
-            arm
+    /** Shoots subwoofer. Ends when shot is detected. */
+    public Command shootSubwoof(){
+        return sequence(
+            // setShotState(ShotMap.kSubwoofer),
+            parallel( // we can ignore some waiting by just setting voltages
+                shooter.setVoltageC(8, 7),
+                arm.setRotationC(ShotMap.kSubwoofer),
+                waitSeconds(0.5)
+            ),
+            feed(),
+            shooter.stopC()
         );
     }
-
-
 }

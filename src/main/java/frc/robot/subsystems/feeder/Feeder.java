@@ -45,14 +45,19 @@ public class Feeder extends SubsystemBase {
         feederMotor.setVoltage(voltage);
     }
 
+    //---------- Command factories
+
+    /** Sets the feeder voltage and ends immediately. */
     public Command setVoltageC(double voltage){
         return runOnce(()->setVoltage(voltage));
     }
     
+    /** Sets the feeder voltage for intaking and ends immediately. */
     public Command setVoltageInC(){
         return runOnce(()->setVoltage(3));
     }
 
+    /** Sets the feeder voltage for outtaking and ends immediately. */
     public Command setVoltageOutC(){
         return runOnce(()->setVoltage(-4));
     }

@@ -25,15 +25,17 @@ public class AutoOptions {
     public SendableChooser<Command> autoOptions = new SendableChooser<Command>();
     private SwerveDrive drive;
     private Intake intake;
+    private Arm arm;
     private Shooter shooter;
     private Feeder feeder;
     private Superstructure superstructure;
 
     private boolean autosSetup = false;
 
-    public AutoOptions(SwerveDrive drive, Intake intake, Shooter shooter, Feeder feeder, Superstructure superstructure) {
-        this.drive=drive;
+    public AutoOptions(SwerveDrive drive, Intake intake, Arm arm, Shooter shooter, Feeder feeder, Superstructure superstructure) {
+        this.drive = drive;
         this.intake = intake;
+        this.arm = arm;
         this.shooter = shooter;
         this.feeder = feeder;
         this.superstructure = superstructure;

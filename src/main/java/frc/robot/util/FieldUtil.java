@@ -5,7 +5,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
 public class FieldUtil {
-    public static final Translation2d kSpeaker = new Translation2d(
+    public static final Translation2d kSpeakerTrl = new Translation2d(
         0,
         5.5
     );
@@ -25,14 +25,7 @@ public class FieldUtil {
     // Speaker angle above ground parallel
     public static final Rotation2d kSpeakerAngle = Rotation2d.fromDegrees(14);
 
-    public static Rotation2d getAngleTo(Translation2d from, Translation2d to){
-        double x = to.getX() - from.getX();
-        double y = to.getY() - from.getY();
-
-        return new Rotation2d(Math.atan2(y, x));
-    }
-
     public static Rotation2d getAngleToSpeaker(Translation2d from){
-        return getAngleTo(from, kSpeaker);
+        return kSpeakerTrl.minus(from).getAngle();
     }
 }

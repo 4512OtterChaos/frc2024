@@ -71,34 +71,32 @@ public class Climber extends SubsystemBase {
         rightMotor.setVoltage(rightAdjustedVoltage);
         leftMotor.setVoltage(leftAdjustedVoltage);
     }
-    public void stop(){setLeftVolts(0);setRightVolts(0);}
-    public void setLeftVolts(double voltage){
-        isManual = true;
-        leftTargetVolts = voltage;
+
+    public boolean isWithinTolerance() {
+        double leftError = Math.abs(leftTargetRotations - leftEncoder.getPosition());
+        double rightError = Math.abs(rightTargetRotations - rightEncoder.getPosition());
+        return leftError <= kToleranceRotations && rightError <= kToleranceRotations;
     }
-    public void setRightVolts(double voltage){
+    
+    public void setVolts(double leftVolts, double rightVolts) {
         isManual = true;
-        rightTargetVolts = voltage;
+        leftTargetVolts = leftVolts;
+        rightTargetVolts = rightVolts;
     }
 
-    public void setLeftRotations(double rotations){
+    public void stop() { setVolts(0, 0); }
+
+    public void setRotations(double leftRot, double rightRot) {
         if(isManual){
             leftController.reset(leftEncoder.getPosition(), leftEncoder.getVelocity());
             rightController.reset(rightEncoder.getPosition(), rightEncoder.getVelocity());
-        } 
+        }
         isManual = false;
-        leftTargetRotations = rotations;
+        leftTargetRotations = leftRot;
+        rightTargetRotations = rightRot; 
     }
-    public void setRightRotations(double rotations){
-        if(isManual){
-            leftController.reset(leftEncoder.getPosition(), leftEncoder.getVelocity());
-            rightController.reset(rightEncoder.getPosition(), rightEncoder.getVelocity());
-        } 
-        isManual = false;
-        rightTargetRotations = rotations;
-    }
-    public void setTopHeightRotations(){setLeftRotations(kTopHeightRotations);setRightRotations(kTopHeightRotations);}
-    public void setBottomHeightRotations(){setLeftRotations(kBottomHeightRotations);setRightRotations(kBottomHeightRotations);}
+    public void setTopHeightRotations() { setRotations(kTopHeightRotations, kTopHeightRotations); }
+    public void setBottomHeightRotations() { setRotations(kBottomHeightRotations, kBottomHeightRotations); }
 
     public void log(){
         SmartDashboard.putNumber("Climber/Left Pos", leftEncoder.getPosition());
@@ -109,7 +107,55 @@ public class Climber extends SubsystemBase {
         SmartDashboard.putNumber("Climber/Left point", leftController.getSetpoint().position);
 
     }
-//No Monologue ;-;
+
+    public double getCurrentDraw(){
+        return leftMotor.getOutputCurrent() + rightMotor.getOutputCurrent();
+    }
+
+    public Command CSetMinHeight(){
+        return run(()->setBottomHeightRotations()).until(this::isWithinTolerance);
+    }
+    
+    public Command CSetMaxHeight(){
+        return run(()->setTopHeightRotations()).until(this::isWithinTolerance);
+    }
+
+    public Command CStop(){
+        return runOnce(()->stop());
+    }
+
+    public Command holdPositionC(){
+        return startEnd(
+            ()->{ // get position at start and hold it
+                setRotations(leftEncoder.getPosition(), rightEncoder.getPosition());
+            },
+            ()->{}
+        );
+    }
+
+    public Command setVoltageC(double leftVolts, double rightVolts){
+        return runOnce(()->setVolts(leftVolts, rightVolts));
+    }
+
+    public Command setVoltageUpC(){
+        return setVoltageC(kVoltageUp, kVoltageUp);
+    }
+    public Command setVoltageUpLeftC(){
+        return setVoltageC(kVoltageUp, 0);
+    }
+    public Command setVoltageUpRightC(){
+        return setVoltageC(0, kVoltageUp);
+    }
+
+    public Command setVoltageDownC(){
+        return setVoltageC(kVoltageDown, kVoltageDown);
+    }
+    public Command setVoltageDownLeftC(){
+        return setVoltageC(kVoltageDown, 0);
+    }
+    public Command setVoltageDownRightC(){
+        return setVoltageC(0, kVoltageDown);
+    }
 
 
     // simulation init
@@ -119,52 +165,5 @@ public class Climber extends SubsystemBase {
     }
     @Override
     public void simulationPeriodic() {
-    }
-
-    public double getCurrentDraw(){
-        return leftMotor.getOutputCurrent() + rightMotor.getOutputCurrent();
-    }
-
-    public Command CSetMinHeight(){
-        return runOnce(()->setBottomHeightRotations());
-    }
-    
-    public Command CSetMaxHeight(){
-        return runOnce(()->setTopHeightRotations());
-    }
-
-    public Command CStop(){
-        return runOnce(()->stop());
-    }
-
-    public Command holdPositionC(){
-        return runOnce(()->{
-            setLeftRotations(leftEncoder.getPosition());
-            setRightRotations(rightEncoder.getPosition());
-        });
-    }
-
-    public Command setLeftVoltageC(double voltage){
-        return runOnce(()->setLeftVolts(voltage));
-    }
-
-    public Command setLeftVoltageUpC(){
-        return runOnce(()->setLeftVolts(kVoltageUp));
-    }
-
-    public Command setLeftVoltageDownC(){
-        return runOnce(()->setLeftVolts(kVoltageDown));
-    }
-
-    public Command setRightVoltageC(double voltage){
-        return runOnce(()->setRightVolts(voltage));
-    }
-
-    public Command setRightVoltageUpC(){
-        return runOnce(()->setRightVolts(kVoltageUp));
-    }
-
-    public Command setRightVoltageDownC(){
-        return runOnce(()->setRightVolts(kVoltageDown));
     }
 }

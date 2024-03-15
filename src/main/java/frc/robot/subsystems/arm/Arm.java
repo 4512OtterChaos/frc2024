@@ -13,8 +13,10 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.ShotMap;
 
 public class Arm extends SubsystemBase {
     private TalonFX leftMotor = new TalonFX(kLeftMotorID);
@@ -27,9 +29,14 @@ public class Arm extends SubsystemBase {
     private boolean isManual = false;
     private double targetVoltage = 0;
 
+    private double lastNonStallTime = Timer.getFPGATimestamp();
+
+    private boolean isHoming = false;
+
     private final StatusSignal<Double> dutyStatus = leftMotor.getDutyCycle();
     private final StatusSignal<Double> voltageStatus = leftMotor.getMotorVoltage();
     private final StatusSignal<Double> positionStatus = leftMotor.getPosition();
+    private final StatusSignal<Double> velocityStatus = leftMotor.getVelocity();
     private final StatusSignal<Double> statorStatus = leftMotor.getStatorCurrent();
 
     public Arm() {
@@ -45,18 +52,40 @@ public class Arm extends SubsystemBase {
         dutyStatus.setUpdateFrequency(100);
         voltageStatus.setUpdateFrequency(100);
         positionStatus.setUpdateFrequency(100);
+        velocityStatus.setUpdateFrequency(50);
         statorStatus.setUpdateFrequency(50);
         ParentDevice.optimizeBusUtilizationForAll(leftMotor, rightMotor);
     }
 
     @Override
     public void periodic() {
-        
+        // Angle safety
+        double currentRot = getArmRotations();
+        double currentKG = Math.cos(getArmRotations()) * kConfig.Slot0.kG;
+        double adjustedVoltage = targetVoltage + currentKG;
+
+        if (currentRot >= kMaxAngle.getRotations()) {
+            adjustedVoltage = Math.min(adjustedVoltage, currentKG);
+        }
+        if (!isHoming && currentRot <= kHomeAngle.plus(kAngleTolerance).getRotations()) {
+            adjustedVoltage = Math.max(adjustedVoltage, 0);
+            if (!isManual) { // go limp at home angle
+                isManual = true;
+                adjustedVoltage = 0;
+            }
+        }
+
+        // Voltage/Position control
         if (!isManual) {
             leftMotor.setControl(mmRequest.withPosition(targetAngle.getRotations()));
         }
         else {
-            leftMotor.setControl(voltageRequest.withOutput(targetVoltage));
+            leftMotor.setControl(voltageRequest.withOutput(adjustedVoltage));
+        }
+
+        // Stall detection
+        if (getCurrent() < kStallThresholdAmps) {
+            lastNonStallTime = Timer.getFPGATimestamp();
         }
     }
 
@@ -64,18 +93,23 @@ public class Arm extends SubsystemBase {
         return positionStatus.getValueAsDouble();
     }
 
-    public void setArmRotations(double rotations){
+    public boolean isWithinTolerance() {
+        double error = targetAngle.minus(Rotation2d.fromRotations(getArmRotations())).getRotations();
+        return Math.abs(error) < kAngleTolerance.getRotations();
+    }
+
+    public void resetArmRotations(double rotations){
         leftMotor.setPosition(rotations);
     }
 
     public void setVoltage(double volts){
         isManual = true;
-        targetVoltage = volts + kConfig.Slot0.kG;
+        targetVoltage = volts;
     }
 
-    public void setAngle(double targetAngle){
+    public void setRotation(Rotation2d targetRot){
         isManual = false;
-        this.targetAngle = Rotation2d.fromRotations(MathUtil.clamp(targetAngle, kHomeAngle.getRotations(), kMaxAngle.getRotations()));
+        this.targetAngle = Rotation2d.fromRotations(MathUtil.clamp(targetRot.getRotations(), kHomeAngle.getRotations(), kMaxAngle.getRotations()));
     }
 
     public void stop(){ 
@@ -83,7 +117,7 @@ public class Arm extends SubsystemBase {
     }
 
     public double getVelocity(){
-        return (leftMotor.getVelocity().getValueAsDouble()+rightMotor.getVelocity().getValueAsDouble())/2;
+        return velocityStatus.getValueAsDouble();
     }
 
     public double getCurrent(){
@@ -91,17 +125,38 @@ public class Arm extends SubsystemBase {
     }
 
     public boolean getStalled(){
-        return false;
+        return (Timer.getFPGATimestamp() - lastNonStallTime) > kStallThresholdSeconds;
     }
 
-    // public Command sendArmHome(){
-    //     return (
-    //         run(()->setSpeed(-0.1)).until(()->getStalled()).finallyDo(()->resetEncoders())
-    //     );
-    // }
+    //---------- Command factories
 
-    public Command CSetAngle(double targetAngle){
-        return runOnce(()->setAngle(targetAngle));
+    /** Sets the arm voltage and ends immediately. */
+    public Command setVoltageC(double volts) {
+        return runOnce(()->setVoltage(volts));
     }
 
+    /** Sets the target arm rotation and ends when it is within tolerance. */
+    public Command setRotationC(ShotMap.State state) {
+        return setRotationC(state.armAngle);
+    }
+
+    /** Sets the target arm rotation and ends when it is within tolerance. */
+    public Command setRotationC(Rotation2d targetRot){
+        return run(()->setRotation(targetRot)).until(this::isWithinTolerance);
+    }
+
+    /** Runs the arm into the hardstop, detecting a current spike and resetting the arm angle. */
+    public Command homingSequenceC(){
+        return startEnd(
+            () -> {
+                isHoming = true;
+                setVoltage(-2);
+            },
+            () -> {
+                isHoming = false;
+                setVoltage(0);
+                resetArmRotations(kHomeAngle.getRotations());
+            }
+        ).until(()->getStalled());
+    }
 }
