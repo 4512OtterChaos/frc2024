@@ -86,18 +86,6 @@ public class Shooter extends SubsystemBase {
         lastAverageErrorRPM = getAverageErrorRPM();
     }
 
-    public void setLeftRPM(double rpm) {
-        targetLeftRPM = rpm;
-        double radpersec = Units.rotationsPerMinuteToRadiansPerSecond(rpm);
-        leftPid.setReference(radpersec, ControlType.kVelocity, 0, kFF.calculate(radpersec));
-    }
-
-    public void setRightRPM(double rpm) {
-        targetRightRPM = rpm;
-        double radpersec = Units.rotationsPerMinuteToRadiansPerSecond(rpm);
-        rightPid.setReference(radpersec, ControlType.kVelocity, 0, kFF.calculate(radpersec));
-    }
-
     public void setVelocity(ShotMap.State state) {
         setVelocity(state.leftRPM, state.rightRPM);
     }
@@ -107,8 +95,12 @@ public class Shooter extends SubsystemBase {
             stop();
         }
         else {
-            setLeftRPM(leftRPM);
-            setRightRPM(rightRPM);
+            targetLeftRPM = leftRPM;
+            double leftRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(leftRPM);
+            leftPid.setReference(leftRPM, ControlType.kVelocity, 0, kFF.calculate(leftRadPerSec));
+            targetRightRPM = rightRPM;
+            double rightRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(rightRPM);
+            rightPid.setReference(rightRPM, ControlType.kVelocity, 0, kFF.calculate(rightRadPerSec));
         }
     }
 
