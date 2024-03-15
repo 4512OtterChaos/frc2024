@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
 import frc.robot.subsystems.arm.Arm;
@@ -13,7 +15,7 @@ import frc.robot.subsystems.shooter.Shooter;
 public class Superstructure {
     private SwerveDrive drive;
     private Intake intake;
-    // private Arm arm;
+    private Arm arm;
     private Shooter shooter;
     private Feeder feeder;
 
@@ -30,7 +32,8 @@ public class Superstructure {
             waitSeconds(0.5),
             feeder.setVoltageInC(),
             waitSeconds(1)
-        ).finallyDo(()-> {
+        ).until(()->shooter.shotNote())
+        .finallyDo(()-> {
             shooter.stop();
             feeder.setVoltage(0);
         });
@@ -54,6 +57,22 @@ public class Superstructure {
             intake.setVoltage(0);
             feeder.setVoltage(0);
         });
+    }
+
+    public Command setShooterState(Shooter.State state){
+        return new StartEndCommand(
+            ()->{
+                shooter.setLeftRPM(state.leftRPM);
+                shooter.setRightRPM(state.rightRPM);
+                arm.setAngle(state.armDeg);
+            },
+            ()->{
+                shooter.stop();
+                arm.stop();
+            },
+            shooter,
+            arm
+        );
     }
 
 

@@ -78,6 +78,10 @@ public class Arm extends SubsystemBase {
         this.targetAngle = Rotation2d.fromRotations(MathUtil.clamp(targetAngle, kHomeAngle.getRotations(), kMaxAngle.getRotations()));
     }
 
+    public void stop(){ 
+        setVoltage(0);
+    }
+
     public double getVelocity(){
         return (leftMotor.getVelocity().getValueAsDouble()+rightMotor.getVelocity().getValueAsDouble())/2;
     }

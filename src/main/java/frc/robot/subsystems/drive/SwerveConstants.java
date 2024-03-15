@@ -32,6 +32,8 @@ public class SwerveConstants {
     // Physical properties
     public static final double kTrackWidth = Units.inchesToMeters(20.5);
     public static final double kTrackLength = Units.inchesToMeters(18.5);
+    public static final double kRobotWidth = Units.inchesToMeters(25 + 3.25*2); //TODO: Replace with correct number
+    
     public static final double kSwerveCenterRadius = Math.hypot(kTrackLength, kTrackWidth)/2;
     
     public static final double kMaxLinearSpeed = Units.feetToMeters(17);
