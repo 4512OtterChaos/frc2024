@@ -196,6 +196,10 @@ public class SwerveDrive extends SubsystemBase {
     public void zeroGyro(){
         gyro.setYaw(0);
     }
+    public void zeroModulePositions() {
+        for (var mod : swerveMods) mod.resetPosition();
+    }
+
     public void addVisionMeasurement(Pose2d measurement, double latencySeconds){
         poseEstimator.addVisionMeasurement(
             measurement,
@@ -321,6 +325,7 @@ public class SwerveDrive extends SubsystemBase {
     public void log(){
         Pose2d pose = getPose();
         LogUtil.logPose("Drive/Pose2d", getPose());
+        SmartDashboard.putNumber("Drive/Raw Yaw", gyro.getYaw());
         SmartDashboard.putNumber("Drive/Rotation", pose.getRotation().getDegrees());
         SmartDashboard.putNumber("Drive/X", pose.getX());
         SmartDashboard.putNumber("Drive/Y", pose.getY());

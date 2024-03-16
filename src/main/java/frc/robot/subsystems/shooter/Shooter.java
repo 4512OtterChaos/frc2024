@@ -7,6 +7,7 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.ShotMap;
@@ -48,6 +49,8 @@ public class Shooter extends SubsystemBase {
         double diff = avgErrorRPM - lastAverageErrorRPM;
         shotDetected = diff > kShotDetectThresholdRPM;
         lastAverageErrorRPM = avgErrorRPM;
+
+        log();
     }
 
     public double getLeftRPM() {
@@ -128,5 +131,15 @@ public class Shooter extends SubsystemBase {
     /** Sets the shooter voltages to 0 and ends immediately. */
     public Command stopC() {
         return setVoltageC(0, 0);
+    }
+
+    public void log() {
+        SmartDashboard.putNumber("Shooter/leftRPM", getLeftRPM());
+        SmartDashboard.putNumber("Shooter/leftTargetRPM", getTargetLeftRPM());
+        SmartDashboard.putNumber("Shooter/rightRPM", getRightRPM());
+        SmartDashboard.putNumber("Shooter/rightTargetRPM", getTargetRightRPM());
+        SmartDashboard.putNumber("Shooter/averageErrorRPM", getAverageErrorRPM());
+        SmartDashboard.putBoolean("Shooter/isShotDetected", isShotDetected());
+        SmartDashboard.putBoolean("Shooter/isReady", isReady());
     }
 }

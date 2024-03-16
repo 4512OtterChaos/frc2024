@@ -12,6 +12,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -88,6 +89,8 @@ public class Arm extends SubsystemBase {
         if (getCurrent() < kStallThresholdAmps) {
             lastNonStallTime = Timer.getFPGATimestamp();
         }
+
+        log();
     }
 
     public double getArmRotations() {
@@ -125,7 +128,7 @@ public class Arm extends SubsystemBase {
         return statorStatus.getValueAsDouble();
     }
 
-    public boolean getStalled(){
+    public boolean isStalled(){
         return (Timer.getFPGATimestamp() - lastNonStallTime) > kStallThresholdSeconds;
     }
 
@@ -158,18 +161,19 @@ public class Arm extends SubsystemBase {
                 setVoltage(0);
                 resetArmRotations(kHomeAngle.getRotations());
             }
-        ).until(()->getStalled());
+        ).until(()->isStalled());
     }
 
     public void log() {
-        SmartDashboard.putNumber("lastNonStallTime", lastNonStallTime);
-        SmartDashboard.putNumber("Arm Rotations", getArmRotations());
-        SmartDashboard.putNumber("Arm Target Degrees", targetAngle.getDegrees());
-        SmartDashboard.putNumber("Motor Current", getCurrent());
-        SmartDashboard.putNumber("Motor Target Voltage", targetVoltage);
-        SmartDashboard.putNumber("Motor Velocity", getVelocity());
-        SmartDashboard.putBoolean("Motor Stalled", getStalled());
-        SmartDashboard.putData("Current Arm Command", getCurrentCommand());
-        SmartDashboard.putData("Default Arm Command", getDefaultCommand());
+        SmartDashboard.putNumber("Arm/Arm Degrees", Units.rotationsToDegrees(getArmRotations()));
+        SmartDashboard.putNumber("Arm/Arm Target Degrees", targetAngle.getDegrees());
+        SmartDashboard.putNumber("Arm/Motor Current", getCurrent());
+        SmartDashboard.putBoolean("Arm/isStalled", isStalled());
+        SmartDashboard.putNumber("Arm/Motor Voltage", voltageStatus.getValueAsDouble());
+        SmartDashboard.putNumber("Arm/Motor Target Voltage", targetVoltage);
+        SmartDashboard.putNumber("Arm/Motor Velocity", getVelocity());
+        SmartDashboard.putBoolean("Arm/Motor Stalled", isStalled());
+        SmartDashboard.putData("Arm/Current Arm Command", getCurrentCommand());
+        SmartDashboard.putData("Arm/Default Arm Command", getDefaultCommand());
     }
 }

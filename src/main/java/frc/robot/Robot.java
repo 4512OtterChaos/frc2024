@@ -167,6 +167,22 @@ public class Robot extends TimedRobot {
                 )
             )
         );
+
+        // measure drive wheel rotations versus gyro rotation
+        controller.back().whileTrue(sequence(
+            swerve.runOnce(()->{
+                swerve.stop();
+            }),
+            waitSeconds(0.5),
+            swerve.runOnce(()->{
+                swerve.zeroGyro();
+                swerve.zeroModulePositions();
+            }),
+            waitSeconds(0.5),
+            swerve.run(()->{
+                swerve.drive(0, 0, 4, false);
+            })
+        ));
     }
 
     private void configureOperatorBinds(OCXboxController controller) {

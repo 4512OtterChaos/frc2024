@@ -241,6 +241,7 @@ public class SwerveModule {
         SmartDashboard.putNumber(prefix+"Steer Native", steerMotor.getSelectedSensorPosition());
         // SmartDashboard.putNumber(prefix+"Steer Target Native", steerMotor.getClosedLoopTarget());
         SmartDashboard.putNumber(prefix+"Steer Velocity Native", steerMotor.getSelectedSensorVelocity());
+        SmartDashboard.putNumber(prefix+"Drive Rotations", TalonUtil.positionToRotations(driveMotor.getSelectedSensorPosition(), kDriveGearRatio));
         SmartDashboard.putNumber(prefix+"Drive Velocity Feet", Units.metersToFeet(state.speedMetersPerSecond));
         SmartDashboard.putNumber(prefix+"Drive Velocity Target Feet", Units.metersToFeet(lastDesiredState.speedMetersPerSecond));
     }
