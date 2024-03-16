@@ -34,7 +34,7 @@ public class ArmConstants {
 
         MotorOutputConfigs output = kConfig.MotorOutput;
         output.NeutralMode = NeutralModeValue.Brake;
-        output.Inverted = InvertedValue.Clockwise_Positive;
+        output.Inverted = InvertedValue.CounterClockwise_Positive;
 
         CurrentLimitsConfigs current = kConfig.CurrentLimits;
         current.StatorCurrentLimitEnable = true;

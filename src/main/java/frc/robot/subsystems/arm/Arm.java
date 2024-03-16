@@ -1,5 +1,6 @@
 package frc.robot.subsystems.arm;
 
+import static edu.wpi.first.wpilibj2.command.Commands.none;
 import static frc.robot.subsystems.arm.ArmConstants.*;
 
 import com.ctre.phoenix6.StatusCode;
@@ -57,6 +58,8 @@ public class Arm extends SubsystemBase {
         velocityStatus.setUpdateFrequency(50);
         statorStatus.setUpdateFrequency(50);
         ParentDevice.optimizeBusUtilizationForAll(leftMotor, rightMotor);
+
+        SmartDashboard.putData("Arm/Subsystem", this);
     }
 
     @Override
@@ -173,7 +176,5 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putNumber("Arm/Motor Target Voltage", targetVoltage);
         SmartDashboard.putNumber("Arm/Motor Velocity", getVelocity());
         SmartDashboard.putBoolean("Arm/Motor Stalled", isStalled());
-        SmartDashboard.putData("Arm/Current Arm Command", getCurrentCommand());
-        SmartDashboard.putData("Arm/Default Arm Command", getDefaultCommand());
     }
 }

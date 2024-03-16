@@ -24,7 +24,7 @@ public class Feeder extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (getFeederCurrent() <= kStallCurrent){
+        if (getCurrent() <= kStallCurrent){
             lastFreeTime = Timer.getFPGATimestamp();
         }
 
@@ -35,7 +35,7 @@ public class Feeder extends SubsystemBase {
         return !sensor.get();
     }
 
-    public double getFeederCurrent(){
+    public double getCurrent(){
         return motor.getOutputCurrent();
     }
 
@@ -57,7 +57,7 @@ public class Feeder extends SubsystemBase {
     
     /** Sets the feeder voltage for intaking and ends immediately. */
     public Command setVoltageInC(){
-        return runOnce(()->setVoltage(3));
+        return runOnce(()->setVoltage(2.5));
     }
 
     /** Sets the feeder voltage for outtaking and ends immediately. */
@@ -67,7 +67,7 @@ public class Feeder extends SubsystemBase {
 
     public void log() {
         SmartDashboard.putNumber("Feeder/Motor Voltage", motor.getAppliedOutput()*12);
-        SmartDashboard.putNumber("Feeder/Motor Current", getFeederCurrent());
+        SmartDashboard.putNumber("Feeder/Motor Current", getCurrent());
         SmartDashboard.putBoolean("Feeder/isStalled", isStalled());
         SmartDashboard.putBoolean("Feeder/isNoteSensed", isNoteSensed());
     }

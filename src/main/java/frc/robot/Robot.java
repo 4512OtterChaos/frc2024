@@ -133,7 +133,8 @@ public class Robot extends TimedRobot {
             sequence(
                 shooter.setVoltageC(3, 3),
                 waitSeconds(0.25),
-                feeder.setVoltageInC()
+                feeder.setVoltageInC(),
+                idle()
             )
         );
         // LEFT TRIGGER: AUTO SHOOT

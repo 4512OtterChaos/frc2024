@@ -1,0 +1,201 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.3677227169596544,
+        "y": 5.5
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.4876469638979162,
+        "y": 7.273764063197643
+      },
+      "isLocked": true,
+      "linkedName": "Subwoofer Front"
+    },
+    {
+      "anchor": {
+        "x": 2.9026396514331485,
+        "y": 6.981410202136645
+      },
+      "prevControl": {
+        "x": 2.4693242816691,
+        "y": 6.981410202136645
+      },
+      "nextControl": {
+        "x": 3.274756355141974,
+        "y": 6.981410202136645
+      },
+      "isLocked": true,
+      "linkedName": "close n3"
+    },
+    {
+      "anchor": {
+        "x": 1.3677227169596544,
+        "y": 5.5
+      },
+      "prevControl": {
+        "x": 1.8267774427286747,
+        "y": 5.99910122897169
+      },
+      "nextControl": {
+        "x": 1.3528983399810188,
+        "y": 5.483882390587785
+      },
+      "isLocked": false,
+      "linkedName": "Subwoofer Front"
+    },
+    {
+      "anchor": {
+        "x": 2.9026396514331485,
+        "y": 5.55472336015897
+      },
+      "prevControl": {
+        "x": 2.7993455961223357,
+        "y": 5.55472336015897
+      },
+      "nextControl": {
+        "x": 3.0059337067439613,
+        "y": 5.55472336015897
+      },
+      "isLocked": true,
+      "linkedName": "close n2"
+    },
+    {
+      "anchor": {
+        "x": 1.3677227169596544,
+        "y": 5.5
+      },
+      "prevControl": {
+        "x": 1.365781356194984,
+        "y": 5.537294197257435
+      },
+      "nextControl": {
+        "x": 1.3940937283583963,
+        "y": 4.9934039469218545
+      },
+      "isLocked": true,
+      "linkedName": "Subwoofer Front"
+    },
+    {
+      "anchor": {
+        "x": 2.5985916359297114,
+        "y": 4.111664701961882
+      },
+      "prevControl": {
+        "x": 1.686447589419395,
+        "y": 4.163118981508619
+      },
+      "nextControl": {
+        "x": 2.799793254743104,
+        "y": 4.100314867054459
+      },
+      "isLocked": true,
+      "linkedName": "CenterTaxi End"
+    },
+    {
+      "anchor": {
+        "x": 1.3677227169596544,
+        "y": 5.5
+      },
+      "prevControl": {
+        "x": 1.6045885083223155,
+        "y": 4.958321483594535
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Subwoofer Front"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Shoot n1",
+      "waypointRelativePos": 0.0,
+      "command": {
+        "type": "deadline",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "ShootSubwoofer"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Shoot n2",
+      "waypointRelativePos": 2.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "ShootSubwoofer"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Shoot n3",
+      "waypointRelativePos": 4.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "ShootSubwoofer"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Shoot n4",
+      "waypointRelativePos": 6.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "ShootSubwoofer"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": null,
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}
