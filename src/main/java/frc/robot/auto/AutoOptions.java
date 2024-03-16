@@ -110,6 +110,6 @@ public class AutoOptions {
 
     private void addAutoMethods(){
         NamedCommands.registerCommand("Intake", superstructure.intake());
-        NamedCommands.registerCommand("ShootSubwoofer", superstructure.shootSubwoof());
+        NamedCommands.registerCommand("ShootSubwoofer", superstructure.shootSubwoof().withTimeout(1.5));
     }
 }

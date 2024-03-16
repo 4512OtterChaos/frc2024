@@ -14,6 +14,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.ShotMap;
@@ -158,5 +159,17 @@ public class Arm extends SubsystemBase {
                 resetArmRotations(kHomeAngle.getRotations());
             }
         ).until(()->getStalled());
+    }
+
+    public void log() {
+        SmartDashboard.putNumber("lastNonStallTime", lastNonStallTime);
+        SmartDashboard.putNumber("Arm Rotations", getArmRotations());
+        SmartDashboard.putNumber("Arm Target Degrees", targetAngle.getDegrees());
+        SmartDashboard.putNumber("Motor Current", getCurrent());
+        SmartDashboard.putNumber("Motor Target Voltage", targetVoltage);
+        SmartDashboard.putNumber("Motor Velocity", getVelocity());
+        SmartDashboard.putBoolean("Motor Stalled", getStalled());
+        SmartDashboard.putData("Current Arm Command", getCurrentCommand());
+        SmartDashboard.putData("Default Arm Command", getDefaultCommand());
     }
 }
