@@ -57,7 +57,7 @@ public class Feeder extends SubsystemBase {
     
     /** Sets the feeder voltage for intaking and ends immediately. */
     public Command setVoltageInC(){
-        return runOnce(()->setVoltage(2.5));
+        return runOnce(()->setVoltage(4));
     }
 
     /** Sets the feeder voltage for outtaking and ends immediately. */

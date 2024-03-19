@@ -16,8 +16,8 @@ import frc.robot.util.TalonUtil;
 
 public class SwerveConstants {
 
-    public static final double kLinearAcceleration = Units.feetToMeters(25); //m/s/s
-    public static final double kLinearDeceleration = Units.feetToMeters(35);
+    public static final double kLinearAcceleration = Units.feetToMeters(30); //m/s/s
+    public static final double kLinearDeceleration = Units.feetToMeters(40);
     public static final double kRotationalAcceleration = Units.rotationsToRadians(6);
     public static final double kRotationalDeceleration = Units.rotationsToRadians(10);
 
@@ -40,7 +40,7 @@ public class SwerveConstants {
     
     public static final double kMaxLinearSpeed = Units.feetToMeters(17);
     public static final double kMaxAngularSpeed = Units.rotationsToRadians(2.2);
-    public static final double kWheelDiameter = Units.inchesToMeters(4);
+    public static final double kWheelDiameter = Units.inchesToMeters(3.8715);
     public static final double kWheelCircumference = kWheelDiameter*Math.PI;
     public static final double kDriveGearRatio = 6.12; // 6.12:1 L3 ratio
     public static final double kSteerGearRatio = 12.8; // 12.8:1
@@ -69,7 +69,7 @@ public class SwerveConstants {
 
     // Current limits
     public static final int kDriveContinuousCurrentLimit = 40;
-    public static final int kDrivePeakCurrentLimit = 65;
+    public static final int kDrivePeakCurrentLimit = 60;
     public static final double kDrivePeakCurrentDuration = 0.1;
     public static final int kSteerContinuousCurrentLimit = 25;
     public static final int kSteerPeakCurrentLimit = 40;

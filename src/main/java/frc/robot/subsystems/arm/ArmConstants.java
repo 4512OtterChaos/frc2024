@@ -47,12 +47,12 @@ public class ArmConstants {
         // limits.ReverseSoftLimitThreshold = kHomeAngle.getRotations();
 
         Slot0Configs control = kConfig.Slot0;
-        control.kP = 0;
+        control.kP = 40;
         control.kI = 0;
         control.kD = 0;
 
         control.GravityType = GravityTypeValue.Arm_Cosine;
-        control.kG = 0;
+        control.kG = 0.25;
         control.kS = 0;
         control.kV = 0;
 

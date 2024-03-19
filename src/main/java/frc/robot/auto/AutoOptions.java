@@ -101,6 +101,12 @@ public class AutoOptions {
         autoOptions.addOption("Source Side Subwoofer 2n",
             AutoBuilder.buildAuto("Source Side Subwoofer 2n")
         );
+        autoOptions.addOption("No Arm 4n",
+            AutoBuilder.buildAuto("No Arm 4n")
+        );
+        // autoOptions.addOption("New No Arm 4n",
+        //     AutoBuilder.buildAuto("New No Arm 4n")
+        // );
         autoOptions.addOption("Shoot1Note", resetInitialOdomC().andThen(superstructure.shootSubwoof().withTimeout(4)));
     }
 
@@ -110,6 +116,6 @@ public class AutoOptions {
 
     private void addAutoMethods(){
         NamedCommands.registerCommand("Intake", superstructure.intake());
-        NamedCommands.registerCommand("ShootSubwoofer", superstructure.shootSubwoof().withTimeout(1));
+        NamedCommands.registerCommand("ShootSubwoofer", superstructure.shootSubwoof().withTimeout(1).finallyDo(()->shooter.setVoltageC(0,0)));
     }
 }

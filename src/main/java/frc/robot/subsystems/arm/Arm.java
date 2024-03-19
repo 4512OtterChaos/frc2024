@@ -60,6 +60,8 @@ public class Arm extends SubsystemBase {
         ParentDevice.optimizeBusUtilizationForAll(leftMotor, rightMotor);
 
         SmartDashboard.putData("Arm/Subsystem", this);
+
+        resetArmRotations(kHomeAngle.getRotations());
     }
 
     @Override
@@ -72,7 +74,7 @@ public class Arm extends SubsystemBase {
         if (currentRot >= kMaxAngle.getRotations()) {
             adjustedVoltage = Math.min(adjustedVoltage, currentKG);
         }
-        if (!isHoming && currentRot <= kHomeAngle.plus(kAngleTolerance).getRotations()) {
+        if (!isHoming && currentRot <= kHomeAngle.plus(kAngleTolerance).getRotations() && targetAngle.getRotations() <= kHomeAngle.plus(kAngleTolerance.times(3)).getRotations()) {
             adjustedVoltage = Math.max(adjustedVoltage, 0);
             if (!isManual) { // go limp at home angle
                 isManual = true;
@@ -168,6 +170,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void log() {
+        SmartDashboard.putNumber("Arm/Arm Native", leftMotor.getPosition().getValueAsDouble());
         SmartDashboard.putNumber("Arm/Arm Degrees", Units.rotationsToDegrees(getArmRotations()));
         SmartDashboard.putNumber("Arm/Arm Target Degrees", targetAngle.getDegrees());
         SmartDashboard.putNumber("Arm/Motor Current", getCurrent());
@@ -176,5 +179,6 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putNumber("Arm/Motor Target Voltage", targetVoltage);
         SmartDashboard.putNumber("Arm/Motor Velocity", getVelocity());
         SmartDashboard.putBoolean("Arm/Motor Stalled", isStalled());
+        SmartDashboard.putNumber("Arm/Time", Timer.getFPGATimestamp());
     }
 }

@@ -45,14 +45,21 @@ public class Superstructure {
 
     public Command intake(){
         return parallel(
-            intake.setVoltageC(7,5),
+            intake.setVoltageC(8,6),
             feeder.setVoltageInC()
         ).until(()->intake.isStalled()).andThen(()->{
-            intake.setVoltage(5,4);
+            intake.setVoltage(6,4);
             feeder.setVoltageInC();
-        }).finallyDo(()->{
+        }).until(()->feeder.isNoteSensed()).andThen(
+            parallel(
+                feeder.setVoltageC(-1),
+                shooter.setVoltageC(-2, -2),
+                idle()
+            ).until(()->!feeder.isNoteSensed())
+        ).finallyDo(()->{
             intake.setVoltage(0, 0);
             feeder.setVoltage(0);
+            shooter.setVoltage(0, 0);
         });
     }
 
@@ -71,12 +78,12 @@ public class Superstructure {
         return sequence(
             // setShotState(ShotMap.kSubwoofer),
             parallel( // we can ignore some waiting by just setting voltages
-                shooter.setVoltageC(8, 7),
+                shooter.setVoltageC(9, 8),
                 // arm.setRotationC(ShotMap.kSubwoofer),
                 waitSeconds(0.6)
             ),
             // feed(),
-            feeder.setVoltageInC(),
+            feeder.setVoltageC(7),
             idle()
             // shooter.stopC()
         );

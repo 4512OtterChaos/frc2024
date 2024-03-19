@@ -43,7 +43,7 @@
         "x": 1.3528983399810188,
         "y": 5.483882390587785
       },
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": "Subwoofer Front"
     },
     {
@@ -104,7 +104,7 @@
         "y": 4.958321483594535
       },
       "nextControl": null,
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": "Subwoofer Front"
     }
   ],
@@ -115,7 +115,7 @@
       "name": "Shoot n1",
       "waypointRelativePos": 0.0,
       "command": {
-        "type": "deadline",
+        "type": "parallel",
         "data": {
           "commands": [
             {

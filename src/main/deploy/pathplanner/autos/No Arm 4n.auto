@@ -18,13 +18,26 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "CenterNoteTaxi"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CenterNoteTaxi"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -49,7 +62,7 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -68,9 +81,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "No Arm 4n from close n3"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "No Arm 4n from close n3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
           }
         },
         {
@@ -80,7 +106,7 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -99,9 +125,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "No Arm 4n from close n1"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "No Arm 4n from close n1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
           }
         },
         {
