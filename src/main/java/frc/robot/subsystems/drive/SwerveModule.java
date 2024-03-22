@@ -9,6 +9,8 @@ import com.ctre.phoenix.motorcontrol.TalonFXSimCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.CANCoderSimCollection;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -36,18 +38,21 @@ public class SwerveModule {
     private double lastTargetTotalAngle = 0;
 
     // Hardware
-    private final WPI_TalonFX driveMotor;
-    private final WPI_TalonFX steerMotor;
-    private final WPI_CANCoder steerEncoder;
+    private final WPI_TalonFX driveMotorOLD; //TODO: DELETE
+    private final TalonFX driveMotor;
+    private final WPI_TalonFX steerMotorOLD;//TODO: DELETE
+    private final TalonFX steerMotor;
+    private final WPI_CANCoder steerEncoderOLD;//TODO: DELETE
+    private final CANcoder steerEncoder;
 
     private double lastSeed = Timer.getFPGATimestamp();
 
     public SwerveModule(Module moduleConstants){
         this.moduleConstants = moduleConstants;
 
-        driveMotor = new WPI_TalonFX(moduleConstants.driveMotorID);
-        steerMotor = new WPI_TalonFX(moduleConstants.steerMotorID);
-        steerEncoder = new WPI_CANCoder(moduleConstants.cancoderID);
+        driveMotor = new TalonFX(moduleConstants.driveMotorID);
+        steerMotor = new TalonFX(moduleConstants.steerMotorID);
+        steerEncoder = new CANcoder(moduleConstants.cancoderID);
 
         setupDriveMotor(true);
         setupCancoder(true);
@@ -61,7 +66,7 @@ public class SwerveModule {
 
     private void setupDriveMotor(boolean init){
         if(init){
-            driveMotor.configAllSettings(driveConfig);
+            driveMotor.getConfigurator().apply(driveConfig);
         }
         driveMotor.enableVoltageCompensation(true);
         driveMotor.setSelectedSensorPosition(0);
@@ -77,7 +82,7 @@ public class SwerveModule {
     }
     private void setupSteerMotor(boolean init){
         if(init){
-            steerMotor.configAllSettings(steerConfig);
+            steerMotor.getConfigurator().apply(steerConfig);
         }
         steerMotor.enableVoltageCompensation(true);
         steerMotor.setInverted(kInvertSteer);

@@ -4,12 +4,9 @@ import static frc.robot.auto.AutoConstants.*;
 import static frc.robot.subsystems.drive.SwerveConstants.*;
 
 import java.util.Optional;
-import java.util.function.BooleanSupplier;
 
-import com.ctre.phoenix.sensors.BasePigeonSimCollection;
-import com.ctre.phoenix.sensors.WPI_Pigeon2;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.AutoBuilderException;
+import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.sim.Pigeon2SimState;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
@@ -53,7 +50,8 @@ public class SwerveDrive extends SubsystemBase {
         swerveMods[3].getModuleConstants().centerOffset
     );
 
-    private final WPI_Pigeon2 gyro = new WPI_Pigeon2(kPigeonID);
+    private final Pigeon2 gyro = new Pigeon2(kPigeonID);
+
     
     private final SwerveDrivePoseEstimator poseEstimator;
     private ChassisSpeeds targetChassisSpeeds = new ChassisSpeeds();
@@ -77,7 +75,7 @@ public class SwerveDrive extends SubsystemBase {
     
     public SwerveDrive() {
         
-        gyro.configAllSettings(kPigeon2Config);
+        gyro.getConfigurator().apply(kPigeon2Config);
         
         zeroGyro();
         
@@ -241,10 +239,10 @@ public class SwerveDrive extends SubsystemBase {
         return gyro.getRotation2d();
     }
     public Rotation2d getGyroPitch(){
-        return Rotation2d.fromDegrees(-gyro.getRoll());
+        return Rotation2d.fromDegrees(-gyro.getRoll().getValueAsDouble());
     }
     public Rotation2d getGyroRoll(){
-        return Rotation2d.fromDegrees(gyro.getPitch());
+        return Rotation2d.fromDegrees(gyro.getPitch().getValueAsDouble());
     }
     /**
      * Adjust the measurement noise/trust of vision estimation as robot velocities change.
@@ -325,7 +323,7 @@ public class SwerveDrive extends SubsystemBase {
     public void log(){
         Pose2d pose = getPose();
         LogUtil.logPose("Drive/Pose2d", getPose());
-        SmartDashboard.putNumber("Drive/Raw Yaw", gyro.getYaw());
+        SmartDashboard.putNumber("Drive/Raw Yaw", gyro.getYaw().getValueAsDouble());
         SmartDashboard.putNumber("Drive/Rotation", pose.getRotation().getDegrees());
         SmartDashboard.putNumber("Drive/X", pose.getX());
         SmartDashboard.putNumber("Drive/Y", pose.getY());
@@ -347,7 +345,8 @@ public class SwerveDrive extends SubsystemBase {
     
 
     //----- Simulation
-    private final BasePigeonSimCollection gyroSim = gyro.getSimCollection(); // simulate pigeon
+    private final Pigeon2SimState gyroSim = gyro.getSimState(); // simulate pigeon
+
 
     @Override
     public void simulationPeriodic(){
@@ -357,7 +356,7 @@ public class SwerveDrive extends SubsystemBase {
 
         double chassisOmega = getChassisSpeeds().omegaRadiansPerSecond;
         chassisOmega = Math.toDegrees(chassisOmega);
-        gyroSim.addHeading(chassisOmega*Robot.kDefaultPeriod);
+        gyroSim.setPitch(chassisOmega*Robot.kDefaultPeriod);
     }
 
     public double getCurrentDraw(){

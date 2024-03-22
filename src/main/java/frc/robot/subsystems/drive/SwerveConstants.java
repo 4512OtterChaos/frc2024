@@ -2,11 +2,17 @@ package frc.robot.subsystems.drive;
 
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
-import com.ctre.phoenix.sensors.Pigeon2Configuration;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
+import com.ctre.phoenix6.configs.Pigeon2Configurator;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -28,7 +34,7 @@ public class SwerveConstants {
     public static final boolean kInvertGyro = false;
     public static final boolean kInvertDrive = false;
     public static final boolean kInvertSteer = false;
-    public static final boolean kInvertCancoder = false;
+    public static final SensorDirectionValue kCancoderDirection = SensorDirectionValue.CounterClockwise_Positive;
     // Physical properties
     public static final double kTrackWidth = Units.inchesToMeters(20.5);
     public static final double kTrackLength = Units.inchesToMeters(18.5);
@@ -105,17 +111,23 @@ public class SwerveConstants {
     public static final int kAllowableSteeringError = 80;
 
     // The configurations applied to swerve CTRE devices
-    public static final TalonFXConfiguration driveConfig = new TalonFXConfiguration();
-    public static final TalonFXConfiguration steerConfig = new TalonFXConfiguration();
-    public static final CANCoderConfiguration cancoderConfig = new CANCoderConfiguration();
+    public static final TalonFXConfiguration driveConfigOLD = new TalonFXConfiguration();
+    public static final Slot0Configs driveConfig = new Slot0Configs();
+    public static final TalonFXConfiguration steerConfigOLD = new TalonFXConfiguration();
+    public static final Slot0Configs steerConfig = new Slot0Configs();
+    public static final CANCoderConfiguration cancoderConfigOLD = new CANCoderConfiguration(); //TODO: DELETE
+    public static final CANcoderConfiguration cancoderConfig = new CANcoderConfiguration();
+    public static final MagnetSensorConfigs cancoderMagnetConfig = cancoderConfig.MagnetSensor;
     public static final Pigeon2Configuration kPigeon2Config = new Pigeon2Configuration();
+
+    
     public static final int kCANTimeout = 100;
 
     static {
-        driveConfig.initializationStrategy = SensorInitializationStrategy.BootToZero;
-        driveConfig.slot0.kP = kDriveKP;
-        driveConfig.slot0.kI = kDriveKI;
-        driveConfig.slot0.kD = kDriveKD;
+        driveConfig.initializationStrategy = SensorInitializationStrategy.BootToZero; //TODO: Find new version
+        driveConfig.kP = kDriveKP;
+        driveConfig.kI = kDriveKI;
+        driveConfig.kD = kDriveKD;
         driveConfig.supplyCurrLimit = new SupplyCurrentLimitConfiguration(
             true,
             kDriveContinuousCurrentLimit,
@@ -127,14 +139,14 @@ public class SwerveConstants {
         driveConfig.velocityMeasurementPeriod = SensorVelocityMeasPeriod.Period_20Ms;
         driveConfig.velocityMeasurementWindow = 32;
 
-        steerConfig.initializationStrategy = SensorInitializationStrategy.BootToZero;
-        steerConfig.slot0.kP = kSteerKP;
-        steerConfig.slot0.kI = kSteerKI;
-        steerConfig.slot0.kD = kSteerKD;
-        steerConfig.slot0.kF = kSteerFF.kv;
+        steerConfig.initializationStrategy = SensorInitializationStrategy.BootToZero; //TODO: Find new version
+        steerConfig.kP = kSteerKP;
+        steerConfig.kI = kSteerKI;
+        steerConfig.kD = kSteerKD;
+        steerConfig.kV = kSteerFF.kv;
         steerConfig.motionCruiseVelocity = TalonUtil.rotationsToVelocity(kSteerVelocity, kSteerGearRatio);
         steerConfig.motionAcceleration = TalonUtil.rotationsToVelocity(kSteerAcceleration, kSteerGearRatio);
-        steerConfig.slot0.allowableClosedloopError = kAllowableSteeringError;
+        steerConfig.allowableClosedloopError = kAllowableSteeringError;
         steerConfig.neutralDeadband = isReal ? 0.01 : 0.001;
         steerConfig.supplyCurrLimit = new SupplyCurrentLimitConfiguration(
             true,
@@ -147,8 +159,8 @@ public class SwerveConstants {
         steerConfig.velocityMeasurementPeriod = SensorVelocityMeasPeriod.Period_20Ms;
         steerConfig.velocityMeasurementWindow = 32;
 
-        cancoderConfig.absoluteSensorRange = AbsoluteSensorRange.Signed_PlusMinus180;
-        cancoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-        cancoderConfig.sensorDirection = kInvertCancoder;
+        cancoderMagnetConfig.withAbsoluteSensorRange(AbsoluteSensorRangeValue.valueOf(180)); //TODO:Check if this is right
+        cancoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition; //TODO: Find new version
+        cancoderMagnetConfig.SensorDirection = kCancoderDirection;
     }
 }
