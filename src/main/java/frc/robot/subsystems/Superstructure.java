@@ -88,4 +88,20 @@ public class Superstructure {
             // shooter.stopC()
         );
     }
+
+    /** Shoots subwoofer. Ends when shot is detected. */
+    public Command shootLow(){
+        return sequence(
+            // setShotState(ShotMap.kSubwoofer),
+            parallel( // we can ignore some waiting by just setting voltages
+                shooter.setVoltageC(3, 2),
+                // arm.setRotationC(ShotMap.kSubwoofer),
+                waitSeconds(0.6)
+            ),
+            // feed(),
+            feeder.setVoltageC(3),
+            idle()
+            // shooter.stopC()
+        );
+    }
 }

@@ -118,7 +118,7 @@ public class Robot extends TimedRobot {
 
         // RIGHT BUMPER ONLY: SUBWOOFER
         controller.rightBumper().and(controller.leftBumper().negate())
-                .whileTrue(superstructure.shootSubwoof());
+                .whileTrue(superstructure.shootLow());
         // LEFT BUMPER: ARM TO AMP
         // Runs until let go
         controller.leftBumper().whileTrue(
