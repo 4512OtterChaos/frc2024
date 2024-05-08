@@ -111,9 +111,9 @@ public class SwerveConstants {
     public static final int kAllowableSteeringError = 80;
 
     // The configurations applied to swerve CTRE devices
-    public static final TalonFXConfiguration driveConfigOLD = new TalonFXConfiguration();
+    public static final TalonFXConfiguration driveConfigOLD = new TalonFXConfiguration(); //TODO: DELETE
     public static final Slot0Configs driveConfig = new Slot0Configs();
-    public static final TalonFXConfiguration steerConfigOLD = new TalonFXConfiguration();
+    public static final TalonFXConfiguration steerConfigOLD = new TalonFXConfiguration(); //TODO: DELETE
     public static final Slot0Configs steerConfig = new Slot0Configs();
     public static final CANCoderConfiguration cancoderConfigOLD = new CANCoderConfiguration(); //TODO: DELETE
     public static final CANcoderConfiguration cancoderConfig = new CANcoderConfiguration();
