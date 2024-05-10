@@ -1,8 +1,7 @@
 package frc.robot.util;
 
-import com.ctre.phoenix.ErrorCode;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.hardware.TalonFX;
 
 /**
  * Utility methods for using the Phoenix library with Falcon 500s
@@ -13,11 +12,29 @@ public class TalonUtil {
      * Configures the status frame periods of given motors
      * @return Success
      */
-    public static boolean configStatusSolo(WPI_TalonFX... motors){
+    public static boolean configStatusSolo(TalonFX... motors){
+        return configStatus1(20, 20) == StatusCode.OK;
+    }
+    /**
+     * Configures the status frame periods of given motors
+     * @return Success
+     */
+    public static boolean configStatusFollower(TalonFX... motors){
         boolean success = true;
-        for(WPI_TalonFX motor : motors){
-            ErrorCode result = motor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20, 20);
-            success = success && (result == ErrorCode.OK);
+        StatusCode result1 = configStatus1(255, 20, motors);
+        StatusCode result2 = configStatus2(255, 20, motors);
+        success = success && (result1 == StatusCode.OK) && (result2 == StatusCode.OK);
+        return success;
+    }
+    /**
+     * Configures the status frame periods of given motors
+     * @return Success
+     */
+    public static boolean configStatusCurrent(TalonFX... motors){
+        boolean success = true;
+        for(TalonFX motor : motors){
+            StatusCode result = motor.getStatorCurrent().setUpdateFrequency(50, .02);
+            success = success && (result == StatusCode.OK);
         }
         return success;
     }
@@ -25,37 +42,47 @@ public class TalonUtil {
      * Configures the status frame periods of given motors
      * @return Success
      */
-    public static boolean configStatusFollower(WPI_TalonFX... motors){
+    public static boolean configStatusSim(TalonFX... motors){
         boolean success = true;
-        for(WPI_TalonFX motor : motors){
-            ErrorCode result1 = motor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 255, 20);
-            ErrorCode result2 = motor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 255, 20);
-            success = success && (result1 == ErrorCode.OK) && (result2 == ErrorCode.OK);
+        StatusCode result1 = configStatus2(10, 20, motors);
+        // StatusCode result2 = motor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_Targets, 10, 20);//TODO: Make this work/update from phoenix 5 to 6
+        success = success && (result1 == StatusCode.OK); //&& (result2 == StatusCode.OK);
+        return success;
+    }
+
+
+    private static StatusCode configStatus1(double periodMs, double timeoutMs, TalonFX... motors){//TODO: Status 1 DOESN'T include limit switches 
+        StatusCode success = StatusCode.OK;
+        double frequencyHz = 1000/periodMs;
+        double timeoutSec = timeoutMs*.001;
+        for(TalonFX motor : motors){
+            StatusCode result1_1 = motor.getClosedLoopOutput().setUpdateFrequency(frequencyHz, timeoutSec);
+            StatusCode result1_2 = motor.getFaultField().setUpdateFrequency(frequencyHz, timeoutSec);
+            if ((success == StatusCode.OK) && (result1_1 == StatusCode.OK) && (result1_2 == StatusCode.OK)){
+                success = StatusCode.OK;
+            }
+            else{
+                success = null;
+            }
         }
         return success;
     }
-    /**
-     * Configures the status frame periods of given motors
-     * @return Success
-     */
-    public static boolean configStatusCurrent(WPI_TalonFX... motors){
-        boolean success = true;
-        for(WPI_TalonFX motor : motors){
-            ErrorCode result = motor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 20, 20);
-            success = success && (result == ErrorCode.OK);
-        }
-        return success;
-    }
-    /**
-     * Configures the status frame periods of given motors
-     * @return Success
-     */
-    public static boolean configStatusSim(WPI_TalonFX... motors){
-        boolean success = true;
-        for(WPI_TalonFX motor : motors){
-            ErrorCode result1 = motor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 10, 20);
-            ErrorCode result2 = motor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_Targets, 10, 20);
-            success = success && (result1 == ErrorCode.OK) && (result2 == ErrorCode.OK);
+
+    private static StatusCode configStatus2(double periodMs, double timeoutMs, TalonFX... motors){
+        StatusCode success = StatusCode.OK;
+        double frequencyHz = 1000/periodMs;
+        double timeoutSec = timeoutMs*.001;
+        for(TalonFX motor : motors){
+            StatusCode result1 = motor.getPosition().setUpdateFrequency(frequencyHz, timeoutSec);
+            StatusCode result2 = motor.getVelocity().setUpdateFrequency(frequencyHz, timeoutSec);
+            StatusCode result3 = motor.getSupplyCurrent().setUpdateFrequency(frequencyHz, timeoutSec);
+            StatusCode result4 = motor.getStickyFaultField().setUpdateFrequency(frequencyHz, timeoutSec);
+            if ((success == StatusCode.OK) && (result1 == StatusCode.OK) && (result2 == StatusCode.OK) && (result3 == StatusCode.OK) && (result4 == StatusCode.OK)){
+                success = StatusCode.OK;
+            }
+            else{
+                success = null;
+            }
         }
         return success;
     }
