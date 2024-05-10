@@ -162,5 +162,6 @@ public class SwerveConstants {
         cancoderMagnetConfig.withAbsoluteSensorRange(AbsoluteSensorRangeValue.valueOf(180)); //TODO:Check if this is right
         cancoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition; //TODO: Find new version
         cancoderMagnetConfig.SensorDirection = kCancoderDirection;
+        cancoderMagnetConfig.MagnetOffset = 0; //TODO: Used to have timeout of 50ms
     }
 }

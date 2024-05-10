@@ -81,15 +81,13 @@ public class SwerveModule {
             driveMotor.getConfigurator().apply(driveConfig);
         }
         driveMotor.enableVoltageCompensation(true);
-        driveMotor.setSelectedSensorPosition(0);
+        driveMotor.setPosition(0);  //TODO: Used to be setSelectedSensorPosition
         driveMotor.setInverted(kInvertDrive);
         TalonUtil.configStatusSolo(driveMotor);
         if(Robot.isSimulation()) TalonUtil.configStatusSim(driveMotor);
     }
     private void setupCancoder(boolean init){
         steerEncoder.getConfigurator().apply(cancoderConfig);
-        // steerEncoder.configMagnetOffset(moduleConstants.angleOffset, 50);
-        steerEncoder.configMagnetOffset(0, 50);
 
     }
     private void setupSteerMotor(boolean init){
@@ -231,7 +229,7 @@ public class SwerveModule {
     }
 
     public void resetPosition(){
-        driveMotor.setSelectedSensorPosition(0);
+        driveMotor.setPosition(0);
     }
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
