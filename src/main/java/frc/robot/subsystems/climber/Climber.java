@@ -39,7 +39,7 @@ public class Climber extends SubsystemBase {
         rightMotor.setCANTimeout(kCANTimeout);
         leftMotor.restoreFactoryDefaults();
         rightMotor.restoreFactoryDefaults();
-        leftMotor.setInverted(kMotorInverted);
+        leftMotor.setInverted(true);
         rightMotor.setInverted(kMotorInverted);
         rightMotor.setIdleMode(IdleMode.kBrake);
         leftMotor.setIdleMode(IdleMode.kBrake);
@@ -97,6 +97,11 @@ public class Climber extends SubsystemBase {
     }
     public void setTopHeightRotations() { setRotations(kTopHeightRotations, kTopHeightRotations); }
     public void setBottomHeightRotations() { setRotations(kBottomHeightRotations, kBottomHeightRotations); }
+
+    public void resetEncoder(double leftEncoderSet, double rightEncoderSet) {
+        leftEncoder.setPosition(leftEncoderSet);
+        rightEncoder.setPosition(rightEncoderSet);
+    }
 
     public void log(){
         SmartDashboard.putNumber("Climber/Left Pos", leftEncoder.getPosition());

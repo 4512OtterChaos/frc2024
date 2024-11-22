@@ -80,11 +80,12 @@ public class Superstructure {
             parallel( // we can ignore some waiting by just setting voltages
                 shooter.setVoltageC(9, 8),
                 // arm.setRotationC(ShotMap.kSubwoofer),
-                waitSeconds(0.6)
+                waitSeconds(1)
             ),
             // feed(),
             feeder.setVoltageC(7),
-            idle()
+            idle()//.until(()->shooter.isShotDetected()).withTimeout(2),
+            // waitSeconds(0.2),
             // shooter.stopC()
         );
     }

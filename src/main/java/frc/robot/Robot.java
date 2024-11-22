@@ -16,11 +16,13 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.auto.AutoOptions;
 import frc.robot.subsystems.ShotMap;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.climber.ClimberConstants;
 import frc.robot.subsystems.drive.SwerveDrive;
 import frc.robot.subsystems.feeder.Feeder;
 import frc.robot.subsystems.intake.Intake;
@@ -30,14 +32,14 @@ import frc.robot.util.OCXboxController;
 
 public class Robot extends TimedRobot {
     private SwerveDrive swerve = new SwerveDrive();
-    // private Climber climber = new Climber();
+    private Climber climber = new Climber();
     private Intake intake = new Intake();
     private Feeder feeder = new Feeder();
     private Arm arm = new Arm();
     // private Arm arm = null;
     private Shooter shooter = new Shooter();
 
-    private Vision vision = new Vision();
+    // private Vision vision = new Vision();
 
     private Superstructure superstructure = new Superstructure(swerve, intake, arm, shooter, feeder);
 
@@ -58,7 +60,7 @@ public class Robot extends TimedRobot {
         shooter.setDefaultCommand(shooter.stopC());
         arm.setDefaultCommand(arm.setRotationC(ShotMap.kIdle));
         feeder.setDefaultCommand(feeder.setVoltageC(0));
-        // climber.setDefaultCommand(climber.holdPositionC());
+        climber.setDefaultCommand(climber.holdPositionC());
     }
     
     @Override
@@ -114,7 +116,7 @@ public class Robot extends TimedRobot {
         );
 
         // RIGHT TRIGGER: INTAKE
-        controller.rightTrigger().whileTrue(superstructure.intake().alongWith(runOnce(()->driver.rumble(0))).andThen(run(()->driver.rumble(0.5)).asProxy().withTimeout(0.3).finallyDo(()->driver.rumble(0))));
+        controller.rightTrigger().whileTrue(superstructure.intake().alongWith(runOnce(()->driver.rumble(0))).andThen(run(()->driver.rumble(0.5)).withTimeout(0.9).asProxy()).finallyDo(()->driver.rumble(0)));
 
         // RIGHT BUMPER ONLY: SUBWOOFER
         controller.rightBumper().and(controller.leftBumper().negate())
@@ -143,22 +145,24 @@ public class Robot extends TimedRobot {
         // controller.povUp().onTrue(climber.CSetMaxHeight());
         // controller.povDown().onTrue(climber.CSetMinHeight());
 
+        
         controller.povLeft().whileTrue(arm.setVoltageC(2).repeatedly().finallyDo(()->arm.setVoltage(0)));
         controller.povRight().whileTrue(arm.setVoltageC(-2).repeatedly().finallyDo(()->arm.setVoltage(0)));
 
-        controller.leftStick()
+        controller.povDown()
             .whileTrue(superstructure.outtake());        
 
-        // controller.y()
-        //     .whileTrue(climber.setVoltageUpC().repeatedly());
+        controller.y()
+            .whileTrue(climber.setVoltageUpC().repeatedly());
 
-        // controller.x().and(controller.b().negate())
-        //     .whileTrue(climber.setVoltageUpLeftC().repeatedly());
-        // controller.b().and(controller.x().negate())
-        //     .whileTrue(climber.setVoltageUpRightC().repeatedly());
+        controller.x().and(controller.b().negate())
+            .whileTrue(climber.setVoltageUpLeftC().repeatedly());
+        controller.b().and(controller.x().negate())
+            .whileTrue(climber.setVoltageUpRightC().repeatedly());
 
-        // controller.a()
-        //     .whileTrue(climber.setVoltageDownC().repeatedly());
+        controller.a()
+            .whileTrue(climber.setVoltageDownC().repeatedly())
+            .onFalse(climber.holdPositionC());
                 
         // reset the robot heading forward
         controller.start()
@@ -172,21 +176,25 @@ public class Robot extends TimedRobot {
             )
         );
 
-        // measure drive wheel rotations versus gyro rotation
-        controller.back().whileTrue(sequence(
-            swerve.runOnce(()->{
-                swerve.stop();
-            }),
-            waitSeconds(0.5),
-            swerve.runOnce(()->{
-                swerve.zeroGyro();
-                swerve.zeroModulePositions();
-            }),
-            waitSeconds(0.5),
-            swerve.run(()->{
-                swerve.drive(0, 0, 4, false);
-            })
-        ));
+        // // measure drive wheel rotations versus gyro rotation
+        // controller.back().whileTrue(sequence(
+        //     swerve.runOnce(()->{
+        //         swerve.stop();
+        //     }),
+        //     waitSeconds(0.5),
+        //     swerve.runOnce(()->{
+        //         swerve.zeroGyro();
+        //         swerve.zeroModulePositions();
+        //     }),
+        //     waitSeconds(0.5),
+        //     swerve.run(()->{
+        //         swerve.drive(0, 0, 4, false);
+        //     })
+        // ));
+
+        controller.povUp().onTrue(Commands.runOnce(()->climber.resetEncoder(ClimberConstants.kTopHeightRotations, ClimberConstants.kTopHeightRotations)));
+        
+        // controller.back().whileTrue(Commands.runOnce(()->climber.setVolts(0, -.5)).finallyDo(()->climber.setVolts(0, 0)));
     }
 
     private void configureOperatorBinds(OCXboxController controller) {
@@ -215,7 +223,7 @@ public class Robot extends TimedRobot {
     public void simulationPeriodic() {
         // Update camera simulation
         // TODO: dont use the pose estimator pose
-        vision.simulationPeriodic(swerve.getPose());
+        // vision.simulationPeriodic(swerve.getPose());
 
         // Calculate battery voltage sag due to current draw
         RoboRioSim.setVInVoltage(
